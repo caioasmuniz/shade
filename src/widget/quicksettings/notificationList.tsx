@@ -2,14 +2,13 @@ import Adw from "gi://Adw?version=1";
 import Notifd from "gi://AstalNotifd";
 import Gtk from "gi://Gtk?version=4.0";
 import Gdk from "gi://Gdk?version=4.0";
-import { createBinding, For } from "gnim";
+import { createBinding, createState, For } from "gnim";
 import Notification from "../common/notification";
 
 export default () => {
   const notifd = Notifd.get_default();
 
   const Header = () => {
-
     const DNDButton = () => <Gtk.Box spacing={4}>
       <Gtk.Image iconName={"notifications-disabled-symbolic"} />
       <Gtk.Label label={"Do Not Disturb"} />
@@ -49,6 +48,50 @@ export default () => {
     </Gtk.Box>
   }
 
+  const NotificationGroup = ({ notifications }:
+    { notifications: Notifd.Notification[] }) => {
+    const [visible, setVisible] = createState(false)
+
+    return <Gtk.Box
+      spacing={4}
+      orientation={Gtk.Orientation.VERTICAL}>
+      <Gtk.Box spacing={4}>
+        <Gtk.Button
+          hexpand
+          onClicked={() =>
+            setVisible(!visible.get())
+          }>
+          <Adw.ButtonContent
+            label={notifications[0].appName}
+            iconName={notifications[0].appIcon}
+          />
+        </Gtk.Button>
+        <Gtk.Button
+          cssClasses={["circular", "destructive-action"]}
+          iconName={"edit-clear-all-symbolic"}
+          valign={Gtk.Align.END}
+          onClicked={() =>
+            notifications.forEach(n => n.dismiss())}
+        />
+      </Gtk.Box>
+      <Notification
+        notif={notifications[0]}
+        closeAction={n => n.dismiss()}
+      />
+      <Gtk.Revealer revealChild={visible}>
+        <Gtk.Box
+          spacing={4}
+          orientation={Gtk.Orientation.VERTICAL}>
+          {notifications.slice(1).map(notif =>
+            <Notification
+              notif={notif}
+              closeAction={n => n.dismiss()} />
+          )}
+        </Gtk.Box>
+      </Gtk.Revealer>
+    </Gtk.Box>
+  }
+
   return <Gtk.Box
     orientation={Gtk.Orientation.VERTICAL}
     cssClasses={["notif-list"]}
@@ -57,39 +100,26 @@ export default () => {
     <Gtk.Box
       orientation={Gtk.Orientation.VERTICAL}
       spacing={6}>
-      <For each={createBinding(notifd, "notifications")
-        .as(n => n
-          .sort((a, b) => b.time - a.time)
-          .reduce((res, notif) => {
-            const i = res.findIndex(n =>
-              n[0].appName === notif.appName)
-            if (i === -1)
-              res.push([notif]);
-            else
-              res[i].push(notif);
-            return res;
-          }, [] as Notifd.Notification[][]))
+      <For each={createBinding(notifd, "notifications").as(n => n
+        .sort((a, b) => b.time - a.time)
+        .reduce((res, notif) => {
+          const i = res.findIndex(n =>
+            n[0].appName === notif.appName)
+          if (i === -1)
+            res.push([notif]);
+          else
+            res[i].push(notif);
+          return res;
+        }, [] as Notifd.Notification[][]))
       }>
-        {(n: Notifd.Notification[]) => {
-          if (n.length === 1)
-            return <Notification
-              notif={n[0]}
-              closeAction={n => n.dismiss()} />
-          return <Adw.ExpanderRow
-          // title={n[0].appName}
-          // iconName={n[0].appIcon}
-          >
+        {(n: Notifd.Notification[]) =>
+          n.length === 1 ?
             <Notification
-              $type="prefix"
-              notif={n[0]}
-              closeAction={n => n.dismiss()} />
-            {n.map(notif =>
-              <Notification
-                notif={notif}
-                closeAction={n => n.dismiss()} />
-            )}
-          </Adw.ExpanderRow>
-        }}
+              closeAction={n => n.dismiss()}
+              notif={n[0]} />
+            :
+            <NotificationGroup notifications={n} />
+        }
       </For>
       <Adw.StatusPage
         visible={createBinding(notifd, "notifications")
