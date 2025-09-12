@@ -5,6 +5,7 @@ import { createBinding } from "gnim"
 
 const profile = Powerprofiles.get_default()
 export default () => <Adw.SplitButton
+  cssClasses={["raised"]}
   widthRequest={150}
   $={self =>
     self.connect("clicked", () => {

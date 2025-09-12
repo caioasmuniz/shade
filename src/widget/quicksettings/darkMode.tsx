@@ -6,6 +6,7 @@ import Darkman from "../../lib/darkman";
 const darkman = Darkman.get_default()
 
 export default () => <Adw.SplitButton
+  cssClasses={["raised"]}
   popover={
     <Gtk.Popover>
       <Gtk.Box
