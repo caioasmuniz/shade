@@ -56,15 +56,16 @@ export default () => {
       spacing={4}
       orientation={Gtk.Orientation.VERTICAL}>
       <Gtk.Box spacing={4}>
-        <Gtk.Button
+        <Adw.ButtonContent
+          label={notifications[0].appName}
+          iconName={notifications[0].appIcon}
           hexpand
+        />
+        <Gtk.Button
           onClicked={() =>
-            setVisible(!visible.get())
-          }>
-          <Adw.ButtonContent
-            label={notifications[0].appName}
-            iconName={notifications[0].appIcon}
-          />
+            setVisible(!visible.get())}
+          iconName={visible.as(v =>
+            v ? "go-up-symbolic" : "go-down-symbolic")}>
         </Gtk.Button>
         <Gtk.Button
           cssClasses={["circular", "destructive-action"]}

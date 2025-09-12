@@ -10,38 +10,64 @@ interface AudioControlProps {
 
 export const AudioEndpointControl = ({ defaultDevice, devices }: AudioControlProps) => {
   const [visible, setVisible] = createState(false)
+  const radioGroup = new Gtk.CheckButton()
+
+  const DeviceWidget = ({ device }:
+    { device: Wireplumber.Endpoint }) =>
+    <Gtk.Box
+      spacing={4}
+      orientation={Gtk.Orientation.VERTICAL}>
+      <Gtk.Box spacing={4}>
+        <Gtk.CheckButton
+          group={radioGroup}
+          cssClasses={["selection-mode"]}
+          active={createBinding(device, "isDefault")}
+          onNotifyActive={({ active }) => {
+            device.isDefault = active
+          }} />
+        <Gtk.Label
+          label={device.description}
+          maxWidthChars={10}
+          hexpand
+          wrap
+        />
+      </Gtk.Box>
+      <Slider
+        min={0}
+        max={100}
+        icon={createBinding(device, "volumeIcon")}
+        value={createBinding(device, 'volume')
+          .as(v => v * 100)}
+        setValue={value => device.set_volume(value / 100)}
+      />
+    </Gtk.Box>
 
   return (
     <Gtk.Box
+      spacing={4}
       cssClasses={["audio-config"]}
       orientation={Gtk.Orientation.VERTICAL}>
-      <Gtk.Button onClicked={() => setVisible(!visible.get())}>
+      <Gtk.Box spacing={4}>
         <Slider
           icon={createBinding(defaultDevice, "volumeIcon")}
           min={0}
           max={100}
           value={createBinding(defaultDevice, 'volume')
-            (v => v * 100)}
+            .as(v => v * 100)}
           setValue={value => defaultDevice.set_volume(value / 100)}
         />
-      </Gtk.Button>
+        <Gtk.Button
+          onClicked={() =>
+            setVisible(!visible.get())}
+          iconName={visible.as(v =>
+            v ? "go-up-symbolic" : "go-down-symbolic")}
+        />
+      </Gtk.Box>
       <Gtk.Revealer revealChild={visible}>
-        <Gtk.Box cssClasses={["buttonGroup"]}
+        <Gtk.Box cssClasses={["card"]}
           orientation={Gtk.Orientation.VERTICAL}>
           <For each={devices}>
-            {device =>
-              <Gtk.Button
-                cssClasses={createBinding(device, "isDefault")
-                  (isDefault => isDefault ? ['active', 'linked'] : ['linked'])}
-                onClicked={() => device.set_is_default(true)}>
-                <Gtk.Label
-                  $type="label"
-                  label={device.description}
-                  wrap
-                  maxWidthChars={10}
-                />
-              </Gtk.Button>
-            }
+            {d => <DeviceWidget device={d} />}
           </For>
         </Gtk.Box>
       </Gtk.Revealer>
