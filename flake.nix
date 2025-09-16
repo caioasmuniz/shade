@@ -14,6 +14,7 @@
     }:
     let
       pname = "stash";
+      version = "0.1.0";
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
@@ -64,22 +65,17 @@
     in
     {
       packages.${system}.default = pkgs.stdenv.mkDerivation {
-        inherit pname;
+        inherit pname version;
         meta.mainProgram = "${pname}";
-        version = "0.1.0";
         src = ./.;
 
         inherit buildInputs nativeBuildInputs;
 
         pnpmDeps = pkgs.pnpm.fetchDeps {
           inherit (self.packages.${system}.default) pname version src;
-          hash = "sha256-rfUXu8cU8/un7OhtLT3YhiPfEZMynBIEiRDZWW0TOAA=";
+          fetcherVersion = 2;
+          hash = "sha256-HVOSWI/jbB5E85btlLSVYbbvEJOA9BQiGavK0Pl/8Hc=";
         };
-
-        postBuild = ''
-          install -Dm644 data/${pname}.gschema.xml -t $out/share/gsettings-schemas/$name/glib-2.0/schemas
-          glib-compile-schemas $out/share/gsettings-schemas/$name/glib-2.0/schemas
-        '';
 
         preFixup = ''
           gappsWrapperArgs+=(
