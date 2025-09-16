@@ -53,6 +53,7 @@ export default ({ app, $ }: {
     )}>
     <Gtk.Box
       cssClasses={["linked", "toolbar", "card"]}
+      css={"box-shadow:none"}
       orientation={Gtk.Orientation.VERTICAL}
       valign={Gtk.Align.END}
       spacing={12}

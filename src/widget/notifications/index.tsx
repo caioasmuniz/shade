@@ -18,7 +18,7 @@ export default ({ app, $ }: {
     $={$}
     name={"notifications"}
     margin={12}
-    cssClasses={["notif-popup"]}
+    cssClasses={["notifications"]}
     visible={createComputed([notifs, createBinding(notifd, "dontDisturb")],
       (notifs, dnd) => notifs.length > 0 && !dnd)
     }
