@@ -77,7 +77,7 @@ export default ({ app, $ }: {
     margin={12}
     application={app}
     name={"quicksettings"}
-    cssClasses={["osd", "toolbar"]}
+    cssClasses={["card", "toolbar"]}
     anchor={barCfg.position.as(p =>
       TOP | (p === LEFT ? LEFT : RIGHT) | BOTTOM
     )}

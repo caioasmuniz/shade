@@ -22,7 +22,7 @@ export default ({ app, $ }: {
   return <Astal.Window
     $={$}
     visible
-    cssClasses={["osd", "toolbar"]}
+    cssClasses={["card"]}
     margin={4}
     application={app}
     monitor={createBinding(hyprland.focusedMonitor, "id")}

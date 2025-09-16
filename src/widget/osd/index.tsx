@@ -52,7 +52,7 @@ export default ({ app, $ }: {
         (a, b) => a || b)
     )}>
     <Gtk.Box
-      cssClasses={["linked", "toolbar", "osd"]}
+      cssClasses={["linked", "toolbar", "card"]}
       orientation={Gtk.Orientation.VERTICAL}
       valign={Gtk.Align.END}
       spacing={12}
