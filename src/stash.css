@@ -1,3 +1,6 @@
 window.card {
   box-shadow: none;
 }
+.card{
+  padding: 4px;
+}

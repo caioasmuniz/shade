@@ -24,7 +24,7 @@ export default ({ app, $ }:
     name={"applauncher"}
     margin={12}
     application={app}
-    cssClasses={["card", "toolbar"]}
+    cssClasses={["card"]}
     keymode={Astal.Keymode.ON_DEMAND}
     monitor={createBinding(hyprland, "focusedMonitor")
       .as(m => m.id)}
