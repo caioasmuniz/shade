@@ -7,19 +7,15 @@ import Notification from "../common/notification";
 
 export default () => {
   const notifd = Notifd.get_default();
-
   const Header = () => {
-    const DNDButton = () => <Gtk.Box spacing={4}>
-      <Gtk.Image iconName={"notifications-disabled-symbolic"} />
-      <Gtk.Label label={"Do Not Disturb"} />
-      <Gtk.Switch
-        valign={Gtk.Align.CENTER}
-        active={createBinding(notifd, "dontDisturb")}
-        cursor={Gdk.Cursor.new_from_name("pointer", null)}
-        $={self =>
-          self.connect("notify::active", self =>
-            notifd.dontDisturb = self.state)} />
-    </Gtk.Box>
+    const DNDButton = () => <Gtk.ToggleButton
+      onClicked={self => notifd.dontDisturb = self.active}
+      active={createBinding(notifd, "dontDisturb")}
+      cursor={Gdk.Cursor.new_from_name("pointer", null)}
+      iconName={"notifications-disabled-symbolic"}
+      cssClasses={createBinding(notifd, "dontDisturb")
+        .as(d => d ? ["suggested-action", "warning"] : [])}
+    />
 
     const ClearAllButton = () => <Gtk.Button
       halign={Gtk.Align.END}
@@ -32,19 +28,14 @@ export default () => {
       </Gtk.Box>
     </Gtk.Button >
 
-    return <Gtk.Box
-      orientation={Gtk.Orientation.VERTICAL}
-      spacing={4}>
+    return <Gtk.Box spacing={4}>
       <Gtk.Label
         label={"Notifications"}
         cssClasses={["title-2"]}
+        hexpand
       />
-      <Gtk.Box
-        halign={Gtk.Align.CENTER}
-        spacing={4}>
-        <DNDButton />
-        <ClearAllButton />
-      </Gtk.Box>
+      <DNDButton />
+      <ClearAllButton />
     </Gtk.Box>
   }
 
@@ -56,19 +47,22 @@ export default () => {
       spacing={4}
       orientation={Gtk.Orientation.VERTICAL}>
       <Gtk.Box spacing={4}>
-        <Adw.ButtonContent
-          label={notifications[0].appName}
-          iconName={notifications[0].appIcon}
-          hexpand
-        />
         <Gtk.Button
           onClicked={() =>
-            setVisible(!visible.get())}
-          iconName={visible.as(v =>
-            v ? "go-up-symbolic" : "go-down-symbolic")}>
+            setVisible(!visible.get())}>
+          <Gtk.Box>
+            <Gtk.Image
+              iconName={notifications[0].appIcon} />
+            <Gtk.Label
+              label={notifications[0].appName}
+              hexpand />
+            <Gtk.Image
+              iconName={visible.as(v =>
+                v ? "go-up-symbolic" : "go-down-symbolic")} />
+          </Gtk.Box>
         </Gtk.Button>
         <Gtk.Button
-          cssClasses={["circular", "destructive-action"]}
+          cssClasses={["destructive-action"]}
           iconName={"edit-clear-all-symbolic"}
           valign={Gtk.Align.END}
           onClicked={() =>
@@ -111,8 +105,7 @@ export default () => {
           else
             res[i].push(notif);
           return res;
-        }, [] as Notifd.Notification[][]))
-      }>
+        }, [] as Notifd.Notification[][]))}>
         {(n: Notifd.Notification[]) =>
           n.length === 1 ?
             <Notification
