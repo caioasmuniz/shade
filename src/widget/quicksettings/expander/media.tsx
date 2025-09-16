@@ -99,7 +99,9 @@ const PlaybackStatus = ({ player }: { player: Mpris.Player }) =>
   </Gtk.Box>
 
 export const MediaIcon = () =>
-  <Gtk.Box>
+  <Gtk.Box
+    visible={createBinding(mpris, "players")
+      .as(p => p.length > 0)}>
     <Gtk.Image
       iconName={"media-playback-start-symbolic"}
     />

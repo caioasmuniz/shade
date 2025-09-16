@@ -5,7 +5,7 @@ import Gdk from "gi://Gdk?version=4.0";
 import { createBinding, createState, For } from "gnim";
 import Notification from "../common/notification";
 
-export default () => {
+export const NotificationList = () => {
   const notifd = Notifd.get_default();
   const Header = () => {
     const DNDButton = () => <Gtk.ToggleButton
