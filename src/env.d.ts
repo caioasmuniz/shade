@@ -1,12 +1,14 @@
-import "@girs/adw-1"
-import "@girs/gjs"
-import "@girs/gjs/dom"
-import "../@girs"
-
 export declare global {
-  export interface ImportMeta {
+  interface ImportMeta {
+    version: string
     domain: string
-    resource: string
-    name: string
+    datadir: string
+    pkgdatadir: string
+    esbuild: string
+  }
+
+  declare module "*.css" {
+    const content: string
+    export default content
   }
 }

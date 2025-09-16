@@ -31,7 +31,7 @@ custom_target(
     '--external:system',
     '--format=esm',
     '--sourcemap=inline',
-    '--target=firefox116',
+    '--loader:.css=text',
     '--define:import.meta.domain="' + domain + '"',
     '--define:import.meta.resource="' + resource + '"',
     '--define:import.meta.name="' + name + '"',
