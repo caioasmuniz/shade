@@ -1,3 +1,4 @@
+import Adw from "gi://Adw?version=1";
 import Hyprland from "gi://AstalHyprland"
 import Astal from "gi://Astal?version=4.0";
 import Gtk from "gi://Gtk?version=4.0";
@@ -14,8 +15,7 @@ import { Battery, BatteryIcon } from "./battery";
 import Bluetooth from "./bluetooth";
 import Brightness from "../../lib/brightness";
 import { useSettings } from "../../lib/settings";
-import { App } from "App";
-import Adw from "@girs/adw-1";
+import { App } from "#/App";
 import { Calendar, CalendarIcon } from "./calendar";
 
 export default ({ app, $ }: {
@@ -98,13 +98,6 @@ export default ({ app, $ }: {
             self.attach(<Bluetooth /> as Gtk.Widget, 0, 1, 1, 1)
           }}>
         </Gtk.Grid>
-        <Gtk.Box halign={Gtk.Align.CENTER} spacing={8}>
-          <Tray />
-          <Lock />
-          <SettingsButton />
-          <RotateButton />
-          <Poweroff />
-        </Gtk.Box>
         <Slider
           icon={"display-brightness-symbolic"}
           min={0}
@@ -116,6 +109,13 @@ export default ({ app, $ }: {
         />
         <AudioConfig />
         <MicConfig />
+        <Gtk.Box halign={Gtk.Align.CENTER} spacing={8}>
+          <Tray />
+          <Lock />
+          <SettingsButton />
+          <RotateButton />
+          <Poweroff />
+        </Gtk.Box>
         <Adw.ExpanderRow>
           <Gtk.Box
             $type="prefix"
