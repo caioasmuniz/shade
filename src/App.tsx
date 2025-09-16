@@ -3,13 +3,13 @@ import Gio from "gi://Gio"
 import Astal from "gi://Astal?version=4.0";
 import { createRoot } from "gnim";
 import { register } from "gnim/gobject"
-import { initSettings, SettingsContext } from "lib/settings";
+import { initSettings, SettingsContext } from "./lib/settings";
 import Osd from "./widget/osd"
-import Applauncher from "widget/applauncher";
-import Notifications from "widget/notifications";
-import Bar from "widget/bar";
-import Quicksettings from "widget/quicksettings";
-import Settings from "widget/settings";
+import Applauncher from "./widget/applauncher";
+import Notifications from "./widget/notifications";
+import Bar from "./widget/bar";
+import Quicksettings from "./widget/quicksettings";
+import Settings from "./widget/settings";
 
 @register()
 export class App extends Adw.Application {
@@ -51,6 +51,6 @@ export class App extends Adw.Application {
   }
 
   vfunc_activate(): void {
-    this.bar.present()
+    // this.bar.present()
   }
 }

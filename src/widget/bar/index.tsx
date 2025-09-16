@@ -8,7 +8,7 @@ import Clock from "./clock";
 import Launcher from "./launcher";
 import { useSettings } from "../../lib/settings";
 import { createBinding } from "gnim";
-import { App } from "App";
+import { App } from "../../App";
 
 export default ({ app, $ }: {
   app: App
