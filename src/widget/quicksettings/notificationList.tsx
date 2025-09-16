@@ -14,7 +14,7 @@ export default () => {
       cursor={Gdk.Cursor.new_from_name("pointer", null)}
       iconName={"notifications-disabled-symbolic"}
       cssClasses={createBinding(notifd, "dontDisturb")
-        .as(d => d ? ["suggested-action", "warning"] : [])}
+        .as(d => d ? ["suggested-action", "warning"] : ["flat"])}
     />
 
     const ClearAllButton = () => <Gtk.Button
@@ -22,20 +22,20 @@ export default () => {
       cursor={Gdk.Cursor.new_from_name("pointer", null)}
       onClicked={() => notifd.get_notifications().
         forEach(n => n.dismiss())}>
-      <Gtk.Box spacing={4}>
-        <Gtk.Image iconName={"edit-clear-all-symbolic"} />
-        <Gtk.Label label={"Clear All"} />
-      </Gtk.Box>
+      <Adw.ButtonContent
+        iconName={"edit-clear-all-symbolic"}
+        label={"Clear"} />
     </Gtk.Button >
 
-    return <Gtk.Box spacing={4}>
+    return <Gtk.Box
+      cssClasses={["toolbar"]}>
       <Gtk.Label
         label={"Notifications"}
-        cssClasses={["title-2"]}
+        cssClasses={["title-1"]}
         hexpand
       />
-      <DNDButton />
       <ClearAllButton />
+      <DNDButton />
     </Gtk.Box>
   }
 
@@ -43,32 +43,36 @@ export default () => {
     { notifications: Notifd.Notification[] }) => {
     const [visible, setVisible] = createState(false)
 
+    const Heading = () => <Gtk.Box
+      cssClasses={["toolbar"]}>
+      <Gtk.ToggleButton
+        onClicked={() =>
+          setVisible(!visible.get())}
+        active={visible}
+        cssClasses={["flat"]}>
+        <Gtk.Box>
+          <Gtk.Image
+            iconName={notifications[0].appIcon} />
+          <Gtk.Label
+            label={notifications[0].appName}
+            hexpand />
+          <Gtk.Image
+            iconName={visible.as(v =>
+              v ? "go-up-symbolic" : "go-down-symbolic")} />
+        </Gtk.Box>
+      </Gtk.ToggleButton>
+      <Gtk.Button
+        iconName={"edit-clear-all-symbolic"}
+        valign={Gtk.Align.END}
+        onClicked={() =>
+          notifications.forEach(n => n.dismiss())}
+      />
+    </Gtk.Box>
+
     return <Gtk.Box
       spacing={4}
       orientation={Gtk.Orientation.VERTICAL}>
-      <Gtk.Box spacing={4}>
-        <Gtk.Button
-          onClicked={() =>
-            setVisible(!visible.get())}>
-          <Gtk.Box>
-            <Gtk.Image
-              iconName={notifications[0].appIcon} />
-            <Gtk.Label
-              label={notifications[0].appName}
-              hexpand />
-            <Gtk.Image
-              iconName={visible.as(v =>
-                v ? "go-up-symbolic" : "go-down-symbolic")} />
-          </Gtk.Box>
-        </Gtk.Button>
-        <Gtk.Button
-          cssClasses={["destructive-action"]}
-          iconName={"edit-clear-all-symbolic"}
-          valign={Gtk.Align.END}
-          onClicked={() =>
-            notifications.forEach(n => n.dismiss())}
-        />
-      </Gtk.Box>
+      <Heading />
       <Notification
         notif={notifications[0]}
         closeAction={n => n.dismiss()}
