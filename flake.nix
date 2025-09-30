@@ -13,8 +13,6 @@
       astal,
     }:
     let
-      pname = "stash";
-      version = "0.1.0";
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
@@ -34,13 +32,12 @@
 
       nativeBuildInputs = with pkgs; [
         wrapGAppsHook
-        pnpm.configHook
-        pnpm
         gobject-introspection
         meson
         pkg-config
         ninja
         desktop-file-utils
+        libxml2
       ];
 
       buildInputs =
@@ -62,19 +59,35 @@
         brightnessctl
         darkman
       ];
+
+      pname = "stash";
+      version = "0.1.0";
+      src = ./.;
     in
     {
       packages.${system}.default = pkgs.stdenv.mkDerivation {
-        inherit pname version;
-        meta.mainProgram = "${pname}";
-        src = ./.;
+        inherit
+          pname
+          version
+          buildInputs
+          nativeBuildInputs
+          ;
+        src = pkgs.stdenv.mkDerivation {
+          inherit src pname version;
+          nativeBuildInputs = with pkgs; [
+            pnpm.configHook
+            pnpm
+          ];
 
-        inherit buildInputs nativeBuildInputs;
+          pnpmDeps = pkgs.pnpm.fetchDeps {
+            inherit pname version src;
+            fetcherVersion = 2;
+            hash = "sha256-k48l50Q1U3NKxQikgRDvtdKZyRuzCJr8DCvIDu6ZxCM=";
+          };
 
-        pnpmDeps = pkgs.pnpm.fetchDeps {
-          inherit (self.packages.${system}.default) pname version src;
-          fetcherVersion = 2;
-          hash = "sha256-HVOSWI/jbB5E85btlLSVYbbvEJOA9BQiGavK0Pl/8Hc=";
+          installPhase = ''
+            cp -r . $out
+          '';
         };
 
         preFixup = ''
@@ -82,6 +95,8 @@
             --prefix PATH : ${pkgs.lib.makeBinPath wrapperPackages}
           )
         '';
+
+        meta.mainProgram = "${pname}";
       };
 
       homeManagerModules = {
@@ -91,17 +106,18 @@
 
       devShells.${system}.default = pkgs.mkShell {
         LD_PRELOAD = "${pkgs.gtk4-layer-shell}/lib/libgtk4-layer-shell.so";
-        inherit nativeBuildInputs;
-        buildInputs =
-          with pkgs;
-          [
+        packages =
+          nativeBuildInputs
+          ++ buildInputs
+          ++ wrapperPackages
+          ++ (with pkgs; [
             libnotify
+            pnpm
             nixd
             nixfmt-rfc-style
             nix-output-monitor
-          ]
-          ++ buildInputs
-          ++ wrapperPackages;
+          ]);
+
       };
     };
 }

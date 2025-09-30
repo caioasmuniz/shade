@@ -1,10 +1,9 @@
 export declare global {
   interface ImportMeta {
+    name: string
     version: string
     domain: string
     datadir: string
-    pkgdatadir: string
-    esbuild: string
   }
 
   declare module "*.css" {

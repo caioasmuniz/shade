@@ -15,10 +15,10 @@
     "typescript-eslint": "latest"
   },
   "dependencies": {
-    "gnim": "latest"
+    "gnim": "^1.8.0",
+    "gnim-schemas": "^0.2.0"
   },
   "prettier": {
-    "semi": false,
-    "printWidth": 100
+    "semi": false
   }
 }

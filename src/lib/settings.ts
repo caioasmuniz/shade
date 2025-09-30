@@ -1,22 +1,20 @@
-import Gio from "gi://Gio?version=2.0";
-import { createContext, createSettings } from "gnim";
+import Gio from "gi://Gio"
+import { createSettings } from "gnim-schemas"
+import { createContext } from "gnim"
+import { barSchema } from "./gschema"
 
-const barSchema = {
-  "position": "i",
-  "temp-path": "s",
-  "system-monitor": "s"
+function createAppSettings() {
+  const barSettings = new Gio.Settings({ schemaId: barSchema.id })
+  const keys = createSettings(barSettings, barSchema)
+  return { bar: { barSettings, ...keys } }
 }
 
-type Settings = { bar: ReturnType<typeof createSettings<typeof barSchema>> }
+type Settings = ReturnType<typeof createAppSettings>
 
-export const SettingsContext = createContext<Settings | null>(null)
+const SettingsContext = createContext<Settings | null>(null)
 
-export function initSettings(): Settings {
-  return {
-    bar: createSettings(
-      new Gio.Settings({ schemaId: `${import.meta.domain}.bar` }),
-      barSchema)
-  }
+export function SettingsProvider<T>(fn: () => T) {
+  return SettingsContext.provide(createAppSettings(), fn)
 }
 
 export function useSettings() {
