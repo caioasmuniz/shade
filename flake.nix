@@ -93,8 +93,8 @@
         preFixup = ''
           gappsWrapperArgs+=(
             --prefix PATH : ${pkgs.lib.makeBinPath wrapperPackages}
-          )
-        '';
+            --prefix LD_PRELOAD : "${pkgs.gtk4-layer-shell}/lib/libgtk4-layer-shell.so"
+          )'';
 
         meta.mainProgram = "${pname}";
       };
