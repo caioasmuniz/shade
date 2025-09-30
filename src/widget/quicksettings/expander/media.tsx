@@ -3,6 +3,7 @@ import Mpris from "gi://AstalMpris";
 import Apps from "gi://AstalApps"
 import Gtk from "gi://Gtk?version=4.0";
 import { For, createBinding } from "gnim";
+import Adw from "gi://Adw?version=1";
 
 const mpris = Mpris.get_default();
 const apps = new Apps.Apps()
@@ -99,16 +100,19 @@ const PlaybackStatus = ({ player }: { player: Mpris.Player }) =>
   </Gtk.Box>
 
 export const MediaIcon = () =>
-  <Gtk.Box
+  <Gtk.Box spacing={4}
     visible={createBinding(mpris, "players")
       .as(p => p.length > 0)}>
     <Gtk.Image
       iconName={"media-playback-start-symbolic"}
+      pixelSize={20}
     />
-    <Gtk.Label
-      label={createBinding(mpris, "players")
-        .as(p => p.length.toString())
-      } />
+    <Adw.WindowTitle
+      title={createBinding(mpris, "players")
+        .as(p => p[0] ? p[0].title : "")}
+      subtitle={createBinding(mpris, "players")
+        .as(p => p[0] ? p[0].identity : "")}
+    />
   </Gtk.Box>
 
 export const Media = () => <Gtk.Box

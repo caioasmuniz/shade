@@ -17,7 +17,7 @@ export const Expander = () => {
         halign={Gtk.Align.CENTER}
         spacing={4}
         hexpand>
-        <MediaIcon />
+        {/* <MediaIcon /> */}
         <CalendarIcon />
         <BatteryIcon />
       </Gtk.Box>
