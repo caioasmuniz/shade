@@ -7,7 +7,7 @@ import Workspaces from "./workspaces";
 import Clock from "./clock";
 import Launcher from "./launcher";
 import { useSettings } from "../../lib/settings";
-import { createBinding } from "gnim";
+import { createBinding, For, This } from "gnim";
 import { App } from "../../App";
 
 export default ({ app, $ }: {
@@ -19,56 +19,60 @@ export default ({ app, $ }: {
   const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
   const vertical = settings.bar.position.as((p) =>
     p === LEFT || p === RIGHT)
-  return <Astal.Window
-    $={$}
-    visible
-    cssClasses={["card"]}
-    margin={4}
-    application={app}
-    monitor={createBinding(hyprland.focusedMonitor, "id")}
-    name={`bar`}
-    exclusivity={Astal.Exclusivity.EXCLUSIVE}
-    anchor={settings.bar.position.as(p =>
-      p === TOP ? (TOP | LEFT | RIGHT) :
-        p === LEFT ? (TOP | LEFT | BOTTOM) :
-          p === BOTTOM ? (RIGHT | LEFT | BOTTOM) :
-            (TOP | RIGHT | BOTTOM)
-    )}>
-    <Gtk.CenterBox
-      cssClasses={["bar-centerbox"]}
-      orientation={vertical.as(v => v ?
-        Gtk.Orientation.VERTICAL :
-        Gtk.Orientation.HORIZONTAL)}
-    >
-      <Gtk.Box
-        $type="start"
-        cssClasses={["linked"]}
-        orientation={vertical.as(v => v ?
-          Gtk.Orientation.VERTICAL :
-          Gtk.Orientation.HORIZONTAL)}>
-        <Launcher app={app} />
-        <Gtk.Separator />
-        <SystemUsage vertical={vertical} />
-      </Gtk.Box>
-      <Workspaces
-        $type={"center"}
-        vertical={vertical}
-        monitor={hyprland.focusedMonitor}
-      />
-      <Gtk.Box
-        $type="end"
-        cssClasses={["linked"]}
-        orientation={vertical.as(v => v ?
-          Gtk.Orientation.VERTICAL :
-          Gtk.Orientation.HORIZONTAL)}
-      >
-        <Clock vertical={vertical} />
-        <Gtk.Separator />
-        <SystemIndicators
-          app={app}
-          vertical={vertical}
-        />
-      </Gtk.Box>
-    </Gtk.CenterBox>
-  </Astal.Window>
+  return <For each={createBinding(hyprland, "monitors")}>
+    {(monitor: Hyprland.Monitor) => <This this={app}>
+      <Astal.Window
+        $={$}
+        visible
+        cssClasses={["card"]}
+        margin={4}
+        application={app}
+        monitor={monitor.id}
+        name={`bar`}
+        exclusivity={Astal.Exclusivity.EXCLUSIVE}
+        anchor={settings.bar.position.as(p =>
+          p === TOP ? (TOP | LEFT | RIGHT) :
+            p === LEFT ? (TOP | LEFT | BOTTOM) :
+              p === BOTTOM ? (RIGHT | LEFT | BOTTOM) :
+                (TOP | RIGHT | BOTTOM)
+        )}>
+        <Gtk.CenterBox
+          cssClasses={["bar-centerbox"]}
+          orientation={vertical.as(v => v ?
+            Gtk.Orientation.VERTICAL :
+            Gtk.Orientation.HORIZONTAL)}
+        >
+          <Gtk.Box
+            $type="start"
+            cssClasses={["linked"]}
+            orientation={vertical.as(v => v ?
+              Gtk.Orientation.VERTICAL :
+              Gtk.Orientation.HORIZONTAL)}>
+            <Launcher app={app} />
+            <Gtk.Separator />
+            <SystemUsage vertical={vertical} />
+          </Gtk.Box>
+          <Workspaces
+            $type={"center"}
+            vertical={vertical}
+            monitor={monitor}
+          />
+          <Gtk.Box
+            $type="end"
+            cssClasses={["linked"]}
+            orientation={vertical.as(v => v ?
+              Gtk.Orientation.VERTICAL :
+              Gtk.Orientation.HORIZONTAL)}
+          >
+            <Clock vertical={vertical} />
+            <Gtk.Separator />
+            <SystemIndicators
+              app={app}
+              vertical={vertical}
+            />
+          </Gtk.Box>
+        </Gtk.CenterBox>
+      </Astal.Window>
+    </This>}
+  </For>
 }
