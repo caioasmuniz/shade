@@ -10,7 +10,7 @@ export default ({ notif, closeAction }: {
   <Gtk.Box
     name={notif.id.toString()}
     cssClasses={["card", "frame"]}
-    css={"box-shadow:none"}
+    css={"box-shadow:none;"}
     spacing={8}
     orientation={Gtk.Orientation.VERTICAL}>
     <Gtk.Box spacing={8}>
