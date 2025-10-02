@@ -1,9 +1,10 @@
 import Adw from "gi://Adw?version=1";
 import Gtk from "gi://Gtk?version=4.0";
 import Bar from "./bar";
+import { App } from "#/App";
 
 export default ({ app, $ }: {
-  app: Gtk.Application
+  app: App
   $?: (self: Adw.Window) => void
 }) => {
   return <Adw.Window

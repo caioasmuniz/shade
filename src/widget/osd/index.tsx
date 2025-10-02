@@ -7,9 +7,10 @@ import Popup from "./popup"
 import GObject from "gnim/gobject"
 import Astal from "gi://Astal?version=4.0"
 import Gtk from "gi://Gtk?version=4.0"
+import { App } from "#/App"
 
 export default ({ app, $ }: {
-  app: Gtk.Application
+  app: App
   $: (self: Astal.Window) => void
 }) => {
   const brightness = Brightness.get_default()

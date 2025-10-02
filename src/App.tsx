@@ -9,12 +9,7 @@ import { register } from "gnim/gobject"
 import { gettext } from "gettext";
 import { SettingsProvider } from "./lib/settings";
 import { requestHandler } from "./lib/requestHandler";
-import Osd from "./widget/osd"
-import Applauncher from "./widget/applauncher";
-import Notifications from "./widget/notifications";
-import Bar from "./widget/bar";
-import Quicksettings from "./widget/quicksettings";
-import Settings from "./widget/settings";
+import { widgets } from "./widget";
 import css from "./stash.css"
 
 @register()
@@ -54,32 +49,9 @@ export class App extends Adw.Application {
       createRoot((dispose) => {
         this.connect("shutdown", dispose)
         this.initCss()
-        SettingsProvider(() => {
-          Osd({
-            app: this,
-            $: (self) => (this.osd = self)
-          })
-          Applauncher({
-            app: this,
-            $: (self) => (this.applauncher = self)
-          })
-          Notifications({
-            app: this,
-            $: (self) => (this.notifications = self)
-          })
-          Quicksettings({
-            app: this,
-            $: (self) => (this.quicksettings = self)
-          })
-          Bar({
-            app: this,
-            $: (self) => (this.bar = self)
-          })
-          Settings({
-            app: this,
-            $: (self) => (this.settings = self)
-          })
-        })
+        SettingsProvider(() =>
+          widgets(this)
+        )
       })
     }
     return 0;
