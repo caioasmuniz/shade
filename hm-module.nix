@@ -66,7 +66,7 @@ in
         wayland.windowManager.hyprland.extraConfig = ''
           bind=SUPER,Space,exec, stash toggle applauncher
           bind=SUPER,n,exec, stash toggle quicksettings
-          bind=SUPERSHIFT,n,exec, stash toggle infopannel
+          bind=SUPER,w,exec, stash toggle bar
         '';
       })
       (lib.mkIf cfg.hyprland.blur.enable {
