@@ -52,11 +52,12 @@ export default ({ app, $ }: {
             <Gtk.Separator />
             <SystemUsage vertical={vertical} />
           </Gtk.Box>
+
           <Workspaces
             $type={"center"}
             vertical={vertical}
-            monitor={monitor}
-          />
+            monitor={monitor} />
+
           <Gtk.Box
             $type="end"
             cssClasses={["linked"]}

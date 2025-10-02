@@ -16,5 +16,9 @@ export const barSchema = new Schema({ id, path })
     default: "",
     summary: "The System Monitor to be opened when clicking systemUsage widget",
   })
+  .key("show-disk-usage", "b", {
+    default: false,
+    summary: "Wheter to show disk use in systemUsage"
+  })
 
 export default defineSchemaList([barSchema])

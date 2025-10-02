@@ -1,7 +1,6 @@
 import Adw from "gi://Adw?version=1";
 import Astal from "gi://Astal?version=4.0";
 import Gtk from "gi://Gtk?version=4.0";
-import { createBinding } from "gnim";
 import { useSettings } from "../../lib/settings";
 
 export default () => {
@@ -26,40 +25,40 @@ export default () => {
           default:
             return "";
         }
-      })
-      }>
+      })}>
       <Adw.ToggleGroup
         $type="suffix"
         cssClasses={["round"]}
         valign={Gtk.Align.CENTER}
         onNotifyActiveName={self => bar.setPosition(
-          Number(self.activeName) as Astal.WindowAnchor)
-        }
+          Number(self.activeName) as Astal.WindowAnchor)}
         activeName={bar.position.as((p) =>
-          (p as number).toString() ?? "")
-        }>
+          (p as number).toString() ?? "")}
+      >
         <Adw.Toggle
           name={TOP.toString()}
           label={"Top"}
-          iconName={"orientation-landscape-symbolic"}
-        />
+          iconName={"orientation-landscape-symbolic"} />
         <Adw.Toggle
           name={LEFT.toString()}
           label={"Left"}
-          iconName={"orientation-portrait-inverse-symbolic"}
-        />
+          iconName={"orientation-portrait-inverse-symbolic"} />
         <Adw.Toggle
           name={RIGHT.toString()}
           label={"Right"}
-          iconName={"orientation-portrait-right-symbolic"}
-        />
+          iconName={"orientation-portrait-right-symbolic"} />
         <Adw.Toggle
           name={BOTTOM.toString()}
           label={"Bottom"}
-          iconName={"orientation-landscape-inverse-symbolic"}
-        />
+          iconName={"orientation-landscape-inverse-symbolic"} />
       </Adw.ToggleGroup>
     </Adw.ActionRow>
+
+    <Adw.SwitchRow
+      title={"Show Disk Usage"}
+      active={bar.showDiskUsage}
+      onNotifyActive={self => bar.setShowDiskUsage(self.active)}
+    />
     <Adw.EntryRow
       title={"Temperature Path"}
       showApplyButton

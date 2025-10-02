@@ -52,12 +52,23 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
     }) => <Gtk.Box
       visible={visible}
       spacing={2}
-      orientation={vertical.as(v => v ?
-        Gtk.Orientation.VERTICAL :
-        Gtk.Orientation.HORIZONTAL)}>
-      <Gtk.Label
-        label={label}
-        cssClasses={["caption-heading", "numeral"]} />
+      orientation={Gtk.Orientation.VERTICAL}
+    >
+      <Gtk.Box
+        spacing={vertical.as(v => v ? 0 : 4)}
+        orientation={vertical.as(v => v ?
+          Gtk.Orientation.VERTICAL :
+          Gtk.Orientation.HORIZONTAL)}
+      >
+        <Gtk.Label
+          label={label}
+          cssClasses={["caption-heading", "numeral"]} />
+        <Gtk.Label
+          cssClasses={["caption", "numeral"]}
+          label={value(v => (v * 100)
+            .toFixed(0)
+            .concat(unit))} />
+      </Gtk.Box>
       <Gtk.LevelBar
         orientation={vertical.as(v => v ?
           Gtk.Orientation.VERTICAL :
@@ -69,11 +80,6 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
         widthRequest={vertical.as(v => v ? -1 : 50)}
         heightRequest={vertical.as(v => v ? 50 : -1)}
       />
-      <Gtk.Label
-        cssClasses={["caption", "numeral"]}
-        label={value(v => (v * 100)
-          .toFixed(0)
-          .concat(unit))} />
     </Gtk.Box>
 
   return <Gtk.Button
@@ -88,7 +94,7 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
       orientation={vertical.as(v => v ?
         Gtk.Orientation.VERTICAL :
         Gtk.Orientation.HORIZONTAL)}
-      spacing={4}>
+      spacing={12}>
       <Indicator
         vertical={vertical}
         value={cpu}
@@ -107,7 +113,7 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
         unit="°C" />
       <Indicator
         vertical={vertical}
-        visible={false}
+        visible={settings.bar.showDiskUsage}
         value={disk}
         label="DISK"
         unit="%" />

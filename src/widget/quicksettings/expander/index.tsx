@@ -1,7 +1,7 @@
 import Gtk from "gi://Gtk?version=4.0"
 import { createState } from "gnim"
 import { Battery, BatteryIcon } from "./battery"
-import { Media, MediaIcon } from "./media"
+// import { Media, MediaIcon } from "./media"
 import { Calendar, CalendarIcon } from "./calendar"
 
 export const Expander = () => {
@@ -36,7 +36,7 @@ export const Expander = () => {
       <Gtk.Box
         spacing={4}
         orientation={Gtk.Orientation.VERTICAL}>
-        <Media />
+        {/* <Media /> */}
         <Calendar />
         <Battery />
       </Gtk.Box>
