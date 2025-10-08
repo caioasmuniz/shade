@@ -1,8 +1,8 @@
-import { App } from "#/App";
+import { app } from "#/App";
 import Gio from "gi://Gio?version=2.0";
 
 export const requestHandler =
-  (app: App, cmd: Gio.ApplicationCommandLine) => {
+  (cmd: Gio.ApplicationCommandLine) => {
     const args = cmd.get_arguments()
     console.log(args)
 

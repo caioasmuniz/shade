@@ -7,12 +7,9 @@ import Popup from "./popup"
 import GObject from "gnim/gobject"
 import Astal from "gi://Astal?version=4.0"
 import Gtk from "gi://Gtk?version=4.0"
-import { App } from "#/App"
+import { app } from "#/App"
 
-export default ({ app, $ }: {
-  app: App
-  $: (self: Astal.Window) => void
-}) => {
+export default () => {
   const brightness = Brightness.get_default()
   const audio = Wireplumber.get_default()!.audio
   const hyprland = AstalHyprland.get_default()
@@ -36,7 +33,7 @@ export default ({ app, $ }: {
   ];
 
   return <Astal.Window
-    $={$}
+    $={self => app.osd = self}
     name={"osd"}
     widthRequest={250}
     application={app}

@@ -5,13 +5,11 @@ import Gtk from "gi://Gtk?version=4.0";
 import { createBinding, createState, For } from "gnim";
 import AppButton from "./appButton";
 import { useSettings } from "../../lib/settings";
-import { App } from "#/App";
+import { app } from "#/App";
 
 const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
 
-export default ({ app, $ }:
-  { app: App, $: (self: Astal.Window) => void }
-) => {
+export default () => {
   const barCfg = useSettings().bar
   const hyprland = Hyprland.get_default()
   const apps = new Apps.Apps()
@@ -19,7 +17,7 @@ export default ({ app, $ }:
   const [list, setList] = createState(apps.get_list())
 
   return <Astal.Window
-    $={$}
+    $={self => app.applauncher = self}
     valign={Gtk.Align.CENTER}
     name={"applauncher"}
     margin={12}
@@ -52,7 +50,7 @@ export default ({ app, $ }:
           orientation={Gtk.Orientation.VERTICAL}
           spacing={8}>
           <For each={list}>
-            {app => <AppButton app={app} />}
+            {app => <AppButton application={app} />}
           </For>
         </Gtk.Box>
       </Gtk.ScrolledWindow>

@@ -1,9 +1,9 @@
 import Gdk from "gi://Gdk?version=4.0";
 import Gtk from "gi://Gtk?version=4.0";
 import { createBinding } from "gnim";
-import { App } from "../../App";
+import { app } from "#/App";
 
-export default ({ app }: { app: App }) => {
+export default () => {
   return <Gtk.ToggleButton
     cursor={Gdk.Cursor.new_from_name("pointer", null)}
     active={createBinding(app.applauncher, "visible")}

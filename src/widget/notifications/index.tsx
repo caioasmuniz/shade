@@ -4,19 +4,16 @@ import Astal from "gi://Astal?version=4.0";
 import Gtk from "gi://Gtk?version=4.0";
 import { For, createBinding, createState, createComputed } from "gnim";
 import Notification from "../common/notification";
-import { App } from "#/App";
+import { app } from "#/App";
 
-export default ({ app, $ }: {
-  app: App
-  $: (self: Astal.Window) => void
-}) => {
+export default () => {
   const notifd = Notifd.get_default();
   const hyprland = Hyprland.get_default();
 
   const [notifs, setNotifs] = createState<Notifd.Notification[]>([])
 
   return <Astal.Window
-    $={$}
+    $={self => app.notifications = self}
     name={"notifications"}
     margin={12}
     cssClasses={["notifications"]}

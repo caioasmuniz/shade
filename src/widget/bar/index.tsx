@@ -8,12 +8,9 @@ import Clock from "./clock";
 import Launcher from "./launcher";
 import { useSettings } from "../../lib/settings";
 import { createBinding, For, This } from "gnim";
-import { App } from "../../App";
+import { app } from "#/App";
 
-export default ({ app, $ }: {
-  app: App
-  $?: (self: Astal.Window) => void
-}) => {
+export default () => {
   const hyprland = Hyprland.get_default()
   const settings = useSettings()
   const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
@@ -22,7 +19,7 @@ export default ({ app, $ }: {
   return <For each={createBinding(hyprland, "monitors")}>
     {(monitor: Hyprland.Monitor) => <This this={app}>
       <Astal.Window
-        $={$}
+        $={self => app.bar = self}
         visible
         cssClasses={["card"]}
         margin={4}
@@ -48,7 +45,7 @@ export default ({ app, $ }: {
             orientation={vertical.as(v => v ?
               Gtk.Orientation.VERTICAL :
               Gtk.Orientation.HORIZONTAL)}>
-            <Launcher app={app} />
+            <Launcher />
             <Gtk.Separator />
             <SystemUsage vertical={vertical} />
           </Gtk.Box>

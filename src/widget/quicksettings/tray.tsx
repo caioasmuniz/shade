@@ -1,4 +1,4 @@
-import { App } from "#/App";
+import { Stash } from "#/App";
 import { useSettings } from "#/lib/settings";
 import AstalIO from "gi://AstalIO?version=0.1";
 import Tray from "gi://AstalTray";
@@ -6,7 +6,7 @@ import Gtk from "gi://Gtk?version=4.0";
 import { Accessor, createBinding, For } from "gnim";
 
 
-export const TrayBox = ({ app }: { app: App }) => {
+export const TrayBox = ({ app }: { app: Stash }) => {
   const tray = Tray.get_default();
 
   const LockButton = () => (

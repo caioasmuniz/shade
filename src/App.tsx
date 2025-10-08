@@ -13,7 +13,7 @@ import { widgets } from "./widget";
 import css from "./stash.css"
 
 @register()
-export class App extends Adw.Application {
+export class Stash extends Adw.Application {
   declare osd: Astal.Window
   declare applauncher: Astal.Window
   declare notifications: Astal.Window
@@ -44,16 +44,15 @@ export class App extends Adw.Application {
 
   vfunc_command_line(cmd: Gio.ApplicationCommandLine) {
     if (cmd.isRemote)
-      requestHandler(this, cmd)
+      requestHandler(cmd)
     else {
       createRoot((dispose) => {
         this.connect("shutdown", dispose)
         this.initCss()
-        SettingsProvider(() =>
-          widgets(this)
-        )
+        SettingsProvider(() => widgets())
       })
     }
     return 0;
   }
 }
+export const app = new Stash();

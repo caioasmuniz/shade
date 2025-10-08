@@ -2,7 +2,7 @@ import Hyprland from "gi://AstalHyprland"
 import Astal from "gi://Astal?version=4.0";
 import Gtk from "gi://Gtk?version=4.0";
 import { createBinding } from "gnim";
-import { App } from "#/App";
+import { app } from "#/App";
 import { useSettings } from "../../lib/settings";
 import { NotificationList } from "./notificationList";
 import { TrayBox } from "./tray";
@@ -10,17 +10,14 @@ import { AudioConfig, BrightnessSlider, MicConfig } from "./sliders";
 import { ButtonGrid } from "./button-grid";
 import { Expander } from "./expander";
 
-export default ({ app, $ }: {
-  app: App
-  $?: (self: Astal.Window) => void
-}) => {
+export default () => {
 
   const barCfg = useSettings().bar
   const hyprland = Hyprland.get_default()
   const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
 
   return <Astal.Window
-    $={$}
+    $={self => app.quicksettings = self}
     margin={12}
     application={app}
     name={"quicksettings"}
