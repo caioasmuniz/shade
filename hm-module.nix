@@ -46,8 +46,10 @@ in
         systemd.user.services.stash = {
           Unit = {
             Description = "Stash - Skill's terrific astal shell";
-            # Documentation = "https://github.com/Aylur/ags";
-            PartOf = [ "graphical-session.target" ];
+            PartOf = [
+              "graphical-session.target"
+              "tray.target"
+            ];
             After = [ "graphical-session-pre.target" ];
           };
 
@@ -58,7 +60,10 @@ in
           };
 
           Install = {
-            WantedBy = [ "graphical-session.target" ];
+            WantedBy = [
+              "graphical-session.target"
+              "tray.target"
+            ];
           };
         };
       })
@@ -67,6 +72,9 @@ in
           bind=SUPER,Space,exec, stash toggle applauncher
           bind=SUPER,n,exec, stash toggle quicksettings
           bind=SUPER,w,exec, stash toggle bar
+
+          gesture= 3,right, dispatcher,exec, stash toggle applauncher
+          gesture= 3,left, dispatcher,exec, stash toggle quicksettings
         '';
       })
       (lib.mkIf cfg.hyprland.blur.enable {
