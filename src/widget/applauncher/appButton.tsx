@@ -2,6 +2,7 @@ import Apps from "gi://AstalApps"
 import Gtk from "gi://Gtk?version=4.0";
 import Gdk from "gi://Gdk?version=4.0";
 import { app } from "#/App";
+import GLib from "gi://GLib?version=2.0";
 
 export default ({ application }: { application: Apps.Application }) =>
   <Gtk.Button
@@ -9,7 +10,13 @@ export default ({ application }: { application: Apps.Application }) =>
     cssClasses={["app-button"]}
     onClicked={() => {
       app.applauncher.visible = false;
-      application.launch();
+      application.frequency += 1
+      GLib.spawn_command_line_async(
+        `systemd-run --user
+          -u ${application.entry.slice(0, -8)}  
+          --slice-inherit
+          ${application.executable.split(" ").at(0)}`
+      )
     }}>
     <Gtk.Box spacing={8}>
       <Gtk.Image
