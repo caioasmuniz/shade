@@ -12,9 +12,9 @@ import Clock from "./clock";
 import Launcher from "./launcher";
 
 export default () => {
-  const settings = useSettings()
+  const { position } = useSettings().bar
   const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
-  const vertical = settings.bar.position.as((p) =>
+  const vertical = position.as((p) =>
     p === LEFT || p === RIGHT)
 
   return <For each={monitors()}>
@@ -29,12 +29,15 @@ export default () => {
         }}
         visible
         cssClasses={["card"]}
-        margin={4}
+        marginTop={position.as(p => p === BOTTOM ? 0 : 4)}
+        marginLeft={position.as(p => p === RIGHT ? 0 : 4)}
+        marginBottom={position.as(p => p === TOP ? 0 : 4)}
+        marginRight={position.as(p => p === LEFT ? 0 : 4)}
         application={app}
         gdkmonitor={monitor}
         name={`bar-${monitor.get_description()}`}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
-        anchor={settings.bar.position.as(p =>
+        anchor={position.as(p =>
           p === TOP ? (TOP | LEFT | RIGHT) :
             p === LEFT ? (TOP | LEFT | BOTTOM) :
               p === BOTTOM ? (RIGHT | LEFT | BOTTOM) :
