@@ -1,31 +1,36 @@
-import Hyprland from "gi://AstalHyprland";
 import Astal from "gi://Astal?version=4.0";
+import Gdk from "gi://Gdk?version=4.0";
 import Gtk from "gi://Gtk?version=4.0";
+import { For, onCleanup } from "gnim";
+import { app } from "#/App";
+import { Gdk2HyprMonitor, monitors } from "#/lib/monitors";
+import { useSettings } from "#/lib/settings";
 import SystemIndicators from "./systemIndicators";
 import SystemUsage from "./systemUsage";
 import Workspaces from "./workspaces";
 import Clock from "./clock";
 import Launcher from "./launcher";
-import { useSettings } from "../../lib/settings";
-import { createBinding, For, This } from "gnim";
-import { app } from "#/App";
 
 export default () => {
-  const hyprland = Hyprland.get_default()
   const settings = useSettings()
   const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
   const vertical = settings.bar.position.as((p) =>
     p === LEFT || p === RIGHT)
-  return <For each={createBinding(hyprland, "monitors")}>
-    {(monitor: Hyprland.Monitor) => <This this={app}>
+
+  return <For each={monitors()}>
+    {(monitor: Gdk.Monitor) =>
       <Astal.Window
-        $={self => app.bar = self}
+        $={self => {
+          onCleanup(() => {
+            self.destroy()
+          })
+        }}
         visible
         cssClasses={["card"]}
         margin={4}
         application={app}
-        monitor={monitor.id}
-        name={`bar`}
+        gdkmonitor={monitor}
+        name={`bar-${monitor.get_description()}`}
         exclusivity={Astal.Exclusivity.EXCLUSIVE}
         anchor={settings.bar.position.as(p =>
           p === TOP ? (TOP | LEFT | RIGHT) :
@@ -53,7 +58,8 @@ export default () => {
           <Workspaces
             $type={"center"}
             vertical={vertical}
-            monitor={monitor} />
+            monitor={Gdk2HyprMonitor(monitor)}
+          />
 
           <Gtk.Box
             $type="end"
@@ -71,6 +77,6 @@ export default () => {
           </Gtk.Box>
         </Gtk.CenterBox>
       </Astal.Window>
-    </This>}
+    }
   </For>
 }
