@@ -1,5 +1,6 @@
 window.card {
   box-shadow: none;
+  background: oklab(from var(--window-bg-color) l a b / 0.75);
 }
 
 .card {
