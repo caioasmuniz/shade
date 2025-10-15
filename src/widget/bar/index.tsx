@@ -21,7 +21,9 @@ export default () => {
     {(monitor: Gdk.Monitor) =>
       <Astal.Window
         $={self => {
+          app.bar.push(self)
           onCleanup(() => {
+            app.bar = app.bar.filter(bar => bar !== self)
             self.destroy()
           })
         }}

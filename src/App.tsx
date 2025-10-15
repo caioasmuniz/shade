@@ -17,7 +17,7 @@ export class Stash extends Adw.Application {
   declare osd: Astal.Window
   declare applauncher: Astal.Window
   declare notifications: Astal.Window
-  declare bar: Astal.Window
+  declare bar: Astal.Window[]
   declare quicksettings: Astal.Window
   declare settings: Adw.Window
 
@@ -29,6 +29,7 @@ export class Stash extends Adw.Application {
     })
     GLib.set_prgname(import.meta.name)
     GLib.set_application_name(gettext("Stash Shell"))
+    this.bar = []
   }
 
   private initCss() {
