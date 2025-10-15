@@ -34,7 +34,7 @@ export default ({ monitor, vertical }:
     spacing={8}>
     <For each={createBinding(hyprland, "workspaces")
       .as(ws => ws
-        .filter(ws => ws.monitor === monitor)
+        .filter(ws => ws.get_monitor() === monitor)
         .sort((a, b) => a.id - b.id)
       )
     }>
@@ -43,40 +43,31 @@ export default ({ monitor, vertical }:
           Gtk.Orientation.VERTICAL :
           Gtk.Orientation.HORIZONTAL)}
         cssClasses={[ws.id < 0 ? "success" : ""]}
-        onNotifyActive={self => {
-          if (hyprland.focusedClient &&
-            self.activeName !== null &&
-            hyprland.focusedClient.address !== self.activeName
+        activeName={createBinding(hyprland, "focusedClient")
+          .as(client => client && client.workspace === ws ?
+            client.address : null as unknown as string
           )
-            hyprland.get_client(self.get_active_name() ?? "")
-              ?.focus()
-        }}
-        $={self => createBinding(hyprland, "focusedClient")
-          .subscribe(() => {
-            const f = hyprland.focusedClient
-            if (f) {
-              if (f.workspace === ws)
-                self.activeName = f.address
-              else
-                self.active = 128
-            }
-          })
-        }>
+        }
+      >
         <For each={createBinding(ws, "clients")}>
           {(client: Hyprland.Client) =>
             <Adw.Toggle
-              name={client.address} child={
-                <Gtk.Image
-                  iconName={getIcon(client)}
-                  pixelSize={24}
-                /> as Gtk.Image
-              } />}
+              name={client.address}
+              iconName={getIcon(client)}
+              child={<Gtk.Image
+                iconName={getIcon(client)}
+                pixelSize={24}
+              >
+                <Gtk.GestureClick
+                  onPressed={() => client.focus()}
+                />
+              </Gtk.Image> as Gtk.Widget} />}
         </For>
+        {/* create toggle when ws is empty */}
         <With value={createBinding(ws, "clients").as(c => c.length < 1)}>
-          {(c) => c ?
+          {(c: boolean) => c ?
             <Adw.Toggle /> : null}
         </With>
       </Adw.ToggleGroup>}
     </For>
   </Gtk.Box> as Gtk.Box
-
