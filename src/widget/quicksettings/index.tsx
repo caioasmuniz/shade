@@ -21,7 +21,8 @@ export default () => {
     margin={12}
     application={app}
     name={"quicksettings"}
-    cssClasses={["card"]}
+    cssClasses={["card", "frame"]}
+    css={"padding-right:0px;"}
     anchor={barCfg.position.as(p =>
       TOP | (p === LEFT ? LEFT : RIGHT) | BOTTOM
     )}
@@ -30,8 +31,11 @@ export default () => {
     <Gtk.ScrolledWindow
       propagateNaturalHeight
       hscrollbarPolicy={Gtk.PolicyType.NEVER}
-      vexpand>
+      vscrollbarPolicy={Gtk.PolicyType.AUTOMATIC}
+      vexpand
+      hexpand>
       <Gtk.Box spacing={8}
+        css={"padding-right: 12px;"}
         orientation={Gtk.Orientation.VERTICAL}>
         <ButtonGrid />
         <BrightnessSlider />

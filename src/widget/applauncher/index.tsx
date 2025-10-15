@@ -22,7 +22,8 @@ export default () => {
     name={"applauncher"}
     margin={12}
     application={app}
-    cssClasses={["card"]}
+    cssClasses={["card", "frame"]}
+    css={"padding-right:0px;"}
     keymode={Astal.Keymode.ON_DEMAND}
     monitor={createBinding(hyprland, "focusedMonitor")
       .as(m => m.id)}
@@ -35,6 +36,7 @@ export default () => {
       spacing={8}>
       <Gtk.Entry
         hexpand
+        css={"margin-right:4px;"}
         placeholderText={"Search your apps"}
         onNotifyText={self => setList(
           apps.fuzzy_query(self.text)
@@ -44,10 +46,12 @@ export default () => {
           apps.fuzzy_query(self.text)[0].launch();
         }} />
       <Gtk.ScrolledWindow
+        css={"padding-right:0px;"}
         hscrollbarPolicy={Gtk.PolicyType.NEVER}
         propagateNaturalHeight>
         <Gtk.Box
           orientation={Gtk.Orientation.VERTICAL}
+          css={"padding-right: 12px;"}
           spacing={8}>
           <For each={list}>
             {app => <AppButton application={app} />}
