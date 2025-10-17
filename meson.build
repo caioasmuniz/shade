@@ -55,7 +55,10 @@ custom_target(
 configure_file(
   input: 'data/desktop.in.desktop',
   output: domain + '.desktop',
-  configuration: {'exe': bindir / name},
+  configuration: {
+    'exe': bindir / name + ' toggle settings',
+    'name': name + 'settings',
+    'comment': 'open stash settings'},
   install: true,
   install_dir: datadir / 'applications',
 )

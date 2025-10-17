@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Todo Demo
-Comment=Gnim Demo Application
+Name=@name@
+Comment=@comment@
 Type=Application
 Exec=@exe@
 Terminal=false
