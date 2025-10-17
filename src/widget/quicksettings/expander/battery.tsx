@@ -14,7 +14,8 @@ const timeTo = createComputed([
     charging ? timeToFull : -timeToEmpty)
 
 export const BatteryIcon = () =>
-  <Gtk.Box spacing={4}>
+  <Gtk.Box spacing={4}
+    visible={createBinding(battery, "isPresent")}>
     <Gtk.Image
       iconName={createBinding(battery, "iconName")}
       pixelSize={20}
@@ -36,6 +37,7 @@ export const Battery = () => <Gtk.Box
   orientation={Gtk.Orientation.VERTICAL}
   cssClasses={["card"]}
   spacing={4}
+  visible={createBinding(battery, "isPresent")}
 >
   <Gtk.Label
     cssClasses={["title-3"]}
