@@ -55,9 +55,11 @@ export default () => {
             orientation={vertical.as(v => v ?
               Gtk.Orientation.VERTICAL :
               Gtk.Orientation.HORIZONTAL)}>
+
             <Launcher />
             <Gtk.Separator />
             <SystemUsage vertical={vertical} />
+
           </Gtk.Box>
 
           <Workspaces
@@ -71,14 +73,12 @@ export default () => {
             cssClasses={["linked"]}
             orientation={vertical.as(v => v ?
               Gtk.Orientation.VERTICAL :
-              Gtk.Orientation.HORIZONTAL)}
-          >
+              Gtk.Orientation.HORIZONTAL)}>
+
             <Clock vertical={vertical} />
             <Gtk.Separator />
-            <SystemIndicators
-              app={app}
-              vertical={vertical}
-            />
+            <SystemIndicators vertical={vertical} />
+
           </Gtk.Box>
         </Gtk.CenterBox>
       </Astal.Window>

@@ -7,12 +7,9 @@ import PowerProf from "gi://AstalPowerProfiles"
 import Gdk from "gi://Gdk?version=4.0"
 import Gtk from "gi://Gtk?version=4.0"
 import { Accessor, createBinding, createComputed } from "gnim"
-import { App } from "App"
+import { app } from "#/App"
 
-export default ({ vertical, app }: {
-  vertical: Accessor<boolean>
-  app: App
-}) => {
+export default ({ vertical }: { vertical: Accessor<boolean> }) => {
   const audio = Wireplumber.get_default()!.audio
   const battery = Batery.get_default()
   const network = Network.get_default()
