@@ -1,4 +1,4 @@
-window.card {
+.background {
   box-shadow: none;
   background: oklab(from var(--window-bg-color) l a b / 0.75);
 }

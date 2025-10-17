@@ -50,7 +50,7 @@ export default () => {
         (a, b) => a || b)
     )}>
     <Gtk.Box
-      cssClasses={["linked", "card"]}
+      cssClasses={["linked", "card", "background"]}
       css={"box-shadow: none; padding: 12px;"}
       orientation={Gtk.Orientation.VERTICAL}
       valign={Gtk.Align.END}

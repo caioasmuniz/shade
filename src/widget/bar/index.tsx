@@ -28,7 +28,7 @@ export default () => {
           })
         }}
         visible
-        cssClasses={["card"]}
+        cssClasses={["card", "background"]}
         marginTop={position.as(p => p === BOTTOM ? 0 : 4)}
         marginLeft={position.as(p => p === RIGHT ? 0 : 4)}
         marginBottom={position.as(p => p === TOP ? 0 : 4)}
