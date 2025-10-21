@@ -59,65 +59,33 @@
         brightnessctl
         darkman
       ];
-
-      pname = "stash";
-      version = "0.0.0";
-      src = ./.;
     in
     {
-      packages.${system}.default = pkgs.stdenv.mkDerivation {
-        inherit
-          pname
-          version
-          buildInputs
-          nativeBuildInputs
-          ;
-        src = pkgs.stdenv.mkDerivation {
-          inherit src pname version;
-          nativeBuildInputs = with pkgs; [
-            pnpm.configHook
-            pnpm
-          ];
-
-          pnpmDeps = pkgs.pnpm.fetchDeps {
-            inherit pname version src;
-            fetcherVersion = 2;
-            hash = "sha256-k48l50Q1U3NKxQikgRDvtdKZyRuzCJr8DCvIDu6ZxCM=";
-          };
-
-          installPhase = ''
-            cp -r . $out
-          '';
+      packages.${system} = {
+        default = import ./nix/stash.nix {
+          inherit
+            pkgs
+            buildInputs
+            nativeBuildInputs
+            wrapperPackages
+            ;
         };
-
-        preFixup = ''
-          gappsWrapperArgs+=(
-            --prefix PATH : ${pkgs.lib.makeBinPath wrapperPackages}
-            --prefix LD_PRELOAD : "${pkgs.gtk4-layer-shell}/lib/libgtk4-layer-shell.so"
-          )'';
-
-        meta.mainProgram = "${pname}";
       };
 
       homeManagerModules = {
+        hyprland = import ./nix/hyprland.nix;
+        stash = import ./nix/hm-module.nix self;
         default = self.homeManagerModules.stash;
-        stash = import ./hm-module.nix self;
       };
 
-      devShells.${system}.default = pkgs.mkShell {
-        LD_PRELOAD = "${pkgs.gtk4-layer-shell}/lib/libgtk4-layer-shell.so";
-        packages =
+      devShells.${system} = import ./nix/devshell.nix {
+        inherit
+          pkgs
+          buildInputs
           nativeBuildInputs
-          ++ buildInputs
-          ++ wrapperPackages
-          ++ (with pkgs; [
-            libnotify
-            pnpm
-            nixd
-            nixfmt-rfc-style
-            nix-output-monitor
-          ]);
-
+          wrapperPackages
+          ;
       };
+      default = self.devShells.stash;
     };
 }
