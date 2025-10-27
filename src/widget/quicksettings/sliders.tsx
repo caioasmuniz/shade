@@ -6,26 +6,29 @@ import { Slider } from "../common/slider"
 
 const audio = Wireplumber.get_default()!.audio
 
-export const AudioConfig = () => (
+export const AudioConfig = () =>
   <AudioEndpointControl
+    visible={createBinding(audio, 'speakers')
+      .as(s => s.length > 0)}
     defaultDevice={audio.defaultSpeaker}
     devices={createBinding(audio, 'speakers')}
   />
-)
 
-export const MicConfig = () => (
+export const MicConfig = () =>
   <AudioEndpointControl
+    visible={createBinding(audio, 'microphones')
+      .as(m => m.length > 0)}
     defaultDevice={audio.defaultMicrophone}
     devices={createBinding(audio, "microphones")}
   />
-)
 
 export const BrightnessSlider = () => {
   const brightness = Brightness.get_default();
-
   return <Slider
+    visible={createBinding(brightness, "screen")
+      .as((v) => v > 0)}
     icon={"display-brightness-symbolic"}
-    min={0}
+    min={1}
     max={100}
     value={createBinding(brightness, "screen")
       .as((v) => v * 100)}

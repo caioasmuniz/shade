@@ -6,10 +6,11 @@ import { Slider } from "./slider"
 interface AudioControlProps {
   defaultDevice: Wireplumber.Endpoint
   devices: Accessor<Wireplumber.Endpoint[]>
+  visible?: Accessor<boolean> | boolean
 }
 
-export const AudioEndpointControl = ({ defaultDevice, devices }: AudioControlProps) => {
-  const [visible, setVisible] = createState(false)
+export const AudioEndpointControl = ({ defaultDevice, devices, visible }: AudioControlProps) => {
+  const [revealed, setRevealed] = createState(false)
   const radioGroup = new Gtk.CheckButton()
 
   const DeviceWidget = ({ device }:
@@ -44,6 +45,7 @@ export const AudioEndpointControl = ({ defaultDevice, devices }: AudioControlPro
 
   return (
     <Gtk.Box
+      visible={visible}
       spacing={4}
       cssClasses={["audio-config"]}
       orientation={Gtk.Orientation.VERTICAL}>
@@ -58,12 +60,12 @@ export const AudioEndpointControl = ({ defaultDevice, devices }: AudioControlPro
         />
         <Gtk.Button
           onClicked={() =>
-            setVisible(!visible.get())}
-          iconName={visible.as(v =>
+            setRevealed(!revealed.get())}
+          iconName={revealed.as(v =>
             v ? "go-up-symbolic" : "go-down-symbolic")}
         />
       </Gtk.Box>
-      <Gtk.Revealer revealChild={visible}>
+      <Gtk.Revealer revealChild={revealed}>
         <Gtk.Box cssClasses={["card"]}
           orientation={Gtk.Orientation.VERTICAL}>
           <For each={devices}>

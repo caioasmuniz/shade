@@ -4,6 +4,7 @@ import { Accessor } from "gnim"
 
 type SliderProps = {
   icon: Accessor<string> | string,
+  visible?: Accessor<boolean> | boolean,
   min: number,
   max: number,
   value: Accessor<number>,
@@ -12,7 +13,8 @@ type SliderProps = {
 export const Slider = (props: SliderProps) =>
   <Gtk.Box
     cssClasses={["slider"]}
-    spacing={4}>
+    spacing={4}
+    visible={props.visible}>
     <Gtk.Image iconName={props.icon} />
     <Astal.Slider
       hexpand
@@ -30,4 +32,4 @@ export const Slider = (props: SliderProps) =>
         .toString()
         .concat("%"))
       } />
-  </Gtk.Box>
+  </Gtk.Box> 
