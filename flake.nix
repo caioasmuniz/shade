@@ -4,6 +4,11 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     astal.url = "github:aylur/astal";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
@@ -11,7 +16,8 @@
       self,
       nixpkgs,
       astal,
-    }:
+      ...
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -86,6 +92,15 @@
           wrapperPackages
           ;
       };
-      default = self.devShells.stash;
+      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {
+          inherit self;
+        };
+        modules = [
+          ./nix/vm.nix
+          inputs.home-manager.nixosModules.home-manager
+        ];
+      };
     };
 }

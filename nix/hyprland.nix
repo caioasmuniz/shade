@@ -139,8 +139,8 @@
         "noanim,selection"
       ];
       bind = [
-        "SUPER,Return,exec,ghostty"
-        "SUPER,B,exec,firefox"
+        "SUPERSHIFT,Return,exec,${lib.getExe pkgs.ghostty}"
+        "SUPERSHIFT,B,exec,${lib.getExe pkgs.firefox}"
         "SUPER,V,exec,pkill pwvucontrol || pwvucontrol"
         "SUPER,E,exec,nautilus"
         "SUPERSHIFT,v,exec,pkill wvkbd || ${lib.getExe pkgs.wvkbd}"
