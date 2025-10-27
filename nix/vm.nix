@@ -36,6 +36,10 @@
         self.homeManagerModules.default
         ./hyprland.nix
         {
+          home.packages = [
+            self.packages.${pkgs.system}.default
+            pkgs.brightnessctl
+          ];
           programs.home-manager.enable = true;
           programs.stash = {
             enable = true;
