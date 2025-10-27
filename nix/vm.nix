@@ -6,10 +6,10 @@
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  users.users.caio = {
+  users.users.test = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    initialPassword = "caio";
+    initialPassword = "test";
   };
 
   services.greetd = {
@@ -31,7 +31,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = { inherit self; };
-    users.caio = {
+    users.test = {
       imports = [
         self.homeManagerModules.default
         ./hyprland.nix
@@ -53,8 +53,8 @@
         }
       ];
       home = {
-        username = "caio";
-        homeDirectory = "/home/caio";
+        username = "test";
+        homeDirectory = "/home/test";
         stateVersion = "25.05";
       };
     };
