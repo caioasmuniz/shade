@@ -3,12 +3,23 @@ import Powerprofiles from "./powerprofiles"
 import DarkMode from "./darkMode"
 import Bluetooth from "./bluetooth"
 
-export const ButtonGrid = () => {
+export const ButtonGrid = ({ cols = 2 }:
+  { cols?: number }) => {
+  const items = [
+    <Powerprofiles />,
+    <DarkMode />,
+    <Bluetooth />,
+  ];
+
   return <Gtk.Grid rowSpacing={4} columnSpacing={4}
-    $={(self) => {
-      self.attach(<Powerprofiles /> as Gtk.Widget, 0, 0, 1, 1)
-      self.attach(<DarkMode /> as Gtk.Widget, 1, 0, 1, 1)
-      self.attach(<Bluetooth /> as Gtk.Widget, 0, 1, 1, 1)
-    }}>
+    $={(self) => items.forEach(
+      (item, index) =>
+        self.attach(
+          item as Gtk.Widget,
+          index % cols,
+          index / cols,
+          1, 1
+        )
+    )}>
   </Gtk.Grid>
 }
