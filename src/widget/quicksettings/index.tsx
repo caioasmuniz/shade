@@ -41,7 +41,7 @@ export default () => {
         <BrightnessSlider />
         <AudioConfig />
         <MicConfig />
-        <TrayBox app={app} />
+        <TrayBox />
         <Expander />
         <NotificationList />
       </Gtk.Box>
