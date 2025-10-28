@@ -1,6 +1,6 @@
-project('stash', version: '0.1.0')
+project('shade-shell', version: '0.1.0')
 
-domain = 'dev.caioasmuniz.stash'
+domain = 'dev.caioasmuniz.shade-shell'
 name = meson.project_name()
 version = meson.project_version()
 
@@ -58,7 +58,7 @@ configure_file(
   configuration: {
     'exe': bindir / name + ' toggle settings',
     'name': name + 'settings',
-    'comment': 'open stash settings'},
+    'comment': 'open shade settings'},
   install: true,
   install_dir: datadir / 'applications',
 )

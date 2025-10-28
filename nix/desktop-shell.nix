@@ -6,7 +6,7 @@
   ...
 }:
 let
-  pname = "stash";
+  pname = "shade-shell";
   version = "0.0.0";
   src = ../.;
 in

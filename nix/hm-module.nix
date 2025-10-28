@@ -6,12 +6,30 @@ self:
   ...
 }:
 let
-  cfg = config.programs.stash;
+  cfg = config.programs.shade;
   pkg = self.packages.${pkgs.system}.default;
 in
 {
-  options.programs.stash = {
-    enable = lib.mkEnableOption "stash";
+  options.programs.shade = {
+    shell = {
+      enable = lib.mkEnableOption "Enable shade shell";
+      blur.enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        example = true;
+        description = ''
+          Enable layer rules to blur the widget's background in hyprland.
+        '';
+      };
+      systemd.enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        example = true;
+        description = ''
+          Enable systemd integration.
+        '';
+      };
+    };
     hyprland = {
       binds.enable = lib.mkOption {
         type = lib.types.bool;
@@ -21,31 +39,15 @@ in
           Enable default binds to toggle the widgets in hyprland.
         '';
       };
-      blur.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        example = true;
-        description = ''
-          Enable layer rules to blur the widget's background in hyprland.
-        '';
-      };
-    };
-    systemd.enable = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      example = true;
-      description = ''
-        Enable systemd integration.
-      '';
     };
   };
-  config = lib.mkIf cfg.enable (
+  config = lib.mkIf cfg.shell.enable (
     lib.mkMerge [
       { home.packages = [ pkg ]; }
-      (lib.mkIf cfg.systemd.enable {
-        systemd.user.services.stash = {
+      (lib.mkIf cfg.shell.systemd.enable {
+        systemd.user.services.shade-shell = {
           Unit = {
-            Description = "Stash - Skill's terrific astal shell";
+            Description = "shade Desktop Shell";
             PartOf = [
               "graphical-session.target"
               "tray.target"
@@ -69,15 +71,15 @@ in
       })
       (lib.mkIf cfg.hyprland.binds.enable {
         wayland.windowManager.hyprland.extraConfig = ''
-          bind=SUPER,Space,exec, stash toggle applauncher
-          bind=SUPER,n,exec, stash toggle quicksettings
-          bind=SUPER,w,exec, stash toggle bar
+          bind=SUPER,Space,exec, shade-shell toggle applauncher
+          bind=SUPER,n,exec, shade-shell toggle quicksettings
+          bind=SUPER,w,exec, shade-shell toggle bar
 
-          gesture= 3,right, dispatcher,exec, stash toggle applauncher
-          gesture= 3,left, dispatcher,exec, stash toggle quicksettings
+          gesture= 3,right, dispatcher,exec, shade-shell toggle applauncher
+          gesture= 3,left, dispatcher,exec, shade-shell toggle quicksettings
         '';
       })
-      (lib.mkIf cfg.hyprland.blur.enable {
+      (lib.mkIf cfg.shell.blur.enable {
         wayland.windowManager.hyprland.extraConfig = ''
           layerrule=blur,gtk4-layer-shell
           layerrule=ignorezero,gtk4-layer-shell

@@ -10,10 +10,10 @@ import { gettext } from "gettext";
 import { SettingsProvider } from "./lib/settings";
 import { requestHandler } from "./lib/requestHandler";
 import { widgets } from "./widget";
-import css from "./stash.css"
+import css from "./shade.css"
 
 @register()
-export class Stash extends Adw.Application {
+export class ShadeShell extends Adw.Application {
   declare osd: Astal.Window
   declare applauncher: Astal.Window
   declare notifications: Astal.Window
@@ -28,7 +28,7 @@ export class Stash extends Adw.Application {
       flags: Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
     })
     GLib.set_prgname(import.meta.name)
-    GLib.set_application_name(gettext("Stash Shell"))
+    GLib.set_application_name(gettext("Shade Shell"))
     this.bar = []
   }
 
@@ -56,4 +56,4 @@ export class Stash extends Adw.Application {
     return 0;
   }
 }
-export const app = new Stash();
+export const app = new ShadeShell();

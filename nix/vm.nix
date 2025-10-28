@@ -41,13 +41,13 @@
             pkgs.brightnessctl
           ];
           programs.home-manager.enable = true;
-          programs.stash = {
-            enable = true;
-            systemd.enable = true;
-            hyprland = {
-              binds.enable = true;
+          programs.shade = {
+            shell = {
+              enable = true;
               blur.enable = true;
+              systemd.enable = true;
             };
+            hyprland.binds.enable = true;
           };
           services.darkman.enable = true;
         }

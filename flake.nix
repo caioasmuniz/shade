@@ -1,5 +1,5 @@
 {
-  description = "Stash - Skill's terrific astal shell";
+  description = "Shade - Skill's Hyprland Adwaita Desktop Environment";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -68,7 +68,7 @@
     in
     {
       packages.${system} = {
-        default = import ./nix/stash.nix {
+        default = import ./nix/desktop-shell.nix {
           inherit
             pkgs
             buildInputs
@@ -80,8 +80,8 @@
 
       homeManagerModules = {
         hyprland = import ./nix/hyprland.nix;
-        stash = import ./nix/hm-module.nix self;
-        default = self.homeManagerModules.stash;
+        shade = import ./nix/hm-module.nix self;
+        default = self.homeManagerModules.shade;
       };
 
       devShells.${system} = import ./nix/devshell.nix {
