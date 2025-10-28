@@ -1,34 +1,28 @@
 {
-  description = "Stash - Skill's terrific astal shell";
+  description = "Shade - Skill's Hyprland Adwaita Desktop Environment";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     astal.url = "github:aylur/astal";
-    gnim = {
-      url = "github:aylur/gnim";
-      flake = false;
-    };
-    ags = {
-      url = "github:aylur/ags";
+    home-manager = {
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.astal.follows = "astal";
-      inputs.gnim.follows = "gnim";
     };
+
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      ags,
+      astal,
       ...
     }@inputs:
     let
-      name = "stash";
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
-      astalPackages = with ags.packages.${system}; [
+      astalPackages = with astal.packages.${system}; [
         apps
         battery
         bluetooth
@@ -39,15 +33,33 @@
         powerprofiles
         tray
         wireplumber
+        astal4
       ];
 
-      extraPackages =
+      nativeBuildInputs = with pkgs; [
+        wrapGAppsHook
+        gobject-introspection
+        meson
+        pkg-config
+        ninja
+        desktop-file-utils
+        libxml2
+      ];
+
+      buildInputs =
         with pkgs;
         [
+          gsettings-desktop-schemas
+          glib
           libadwaita
           libgtop
           libgweather
           glib-networking
+          gtk4
+          gtk4-layer-shell
+          gjs
+          esbuild
+          nodejs
         ]
         ++ astalPackages;
 
@@ -57,56 +69,40 @@
       ];
     in
     {
-      packages.${system}.default = pkgs.stdenv.mkDerivation {
-        inherit name;
-        meta.mainProgram = "${name}";
-        src = ./.;
-
-        nativeBuildInputs = [
-          pkgs.wrapGAppsHook
-          pkgs.gobject-introspection
-          ags.packages.${system}.default
-        ];
-
-        buildInputs = extraPackages ++ [
-          pkgs.gjs
-          pkgs.glib
-          ags.packages.${system}.astal4
-        ];
-
-        installPhase = ''
-          mkdir -p $out/bin
-          ags bundle app.ts $out/bin/${name}
-        '';
-
-        preFixup = ''
-          gappsWrapperArgs+=(
-            --prefix PATH : ${pkgs.lib.makeBinPath wrapperPackages}
-          )
-        '';
+      packages.${system} = {
+        default = import ./nix/desktop-shell.nix {
+          inherit
+            pkgs
+            buildInputs
+            nativeBuildInputs
+            wrapperPackages
+            ;
+        };
       };
 
       homeManagerModules = {
-        default = self.homeManagerModules.stash;
-        stash = import ./hm-module.nix self;
+        hyprland = import ./nix/hyprland.nix;
+        shade = import ./nix/hm-module.nix self;
+        default = self.homeManagerModules.shade;
       };
 
-      devShells.${system}.default = pkgs.mkShell {
-
-        ENV = "dev";
-        buildInputs =
-          with pkgs;
-          [
-            (inputs.ags.packages.${pkgs.system}.default.override {
-              inherit extraPackages;
-            })
-            libnotify
-            nixd
-            nixfmt-rfc-style
-            nix-output-monitor
-          ]
-          ++ astalPackages
-          ++ wrapperPackages;
+      devShells.${system} = import ./nix/devshell.nix {
+        inherit
+          pkgs
+          buildInputs
+          nativeBuildInputs
+          wrapperPackages
+          ;
+      };
+      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {
+          inherit self;
+        };
+        modules = [
+          ./nix/vm.nix
+          inputs.home-manager.nixosModules.home-manager
+        ];
       };
     };
 }
