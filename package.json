@@ -1,10 +1,24 @@
 {
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --fix",
+    "types": "npx @ts-for-gir/cli generate -o @girs --ignoreVersionConflicts",
+    "build": "meson setup --prefix \"$(pwd)/dist\" build --wipe ; meson install -C build",
+    "dev": "cp ./data/io.astal.notifd.gschema.xml ./dist/share/glib-2.0/schemas ; pnpm run build ; GSETTINGS_SCHEMA_DIR=\"$(pwd)/dist/share/glib-2.0/schemas\" ./dist/bin/*"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@girs/adw-1": "latest",
+    "esbuild": "latest",
+    "eslint": "latest",
+    "typescript": "latest",
+    "typescript-eslint": "latest"
+  },
   "dependencies": {
-    "ags": "*",
-    "gnim": "*"
+    "gnim": "^1.8.2",
+    "gnim-schemas": "^0.2.0"
   },
   "prettier": {
-    "semi": false,
-    "tabWidth": 2
+    "semi": false
   }
 }
