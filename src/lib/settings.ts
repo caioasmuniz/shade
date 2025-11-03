@@ -1,12 +1,21 @@
 import Gio from "gi://Gio"
 import { createSettings } from "gnim-schemas"
 import { createContext } from "gnim"
-import { barSchema } from "./gschema"
+import { barSchema, weatherSchema } from "./gschema"
 
 function createAppSettings() {
   const barSettings = new Gio.Settings({ schemaId: barSchema.id })
-  const keys = createSettings(barSettings, barSchema)
-  return { bar: { barSettings, ...keys } }
+  const weatherSettings = new Gio.Settings({ schemaId: weatherSchema.id })
+  return {
+    bar: {
+      barSettings,
+      ...createSettings(barSettings, barSchema)
+    },
+    weather: {
+      weatherSettings,
+      ...createSettings(weatherSettings, weatherSchema)
+    }
+  }
 }
 
 type Settings = ReturnType<typeof createAppSettings>
