@@ -17,7 +17,7 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
   const powerprof = PowerProf.get_default()
   const notifd = Notifd.get_default()
   const bluetooth = Bluetooth.get_default()
-  const weather = Weather.get_default()
+  const weather = Weather.get_default().info
 
   const ProfileIndicator = () => <Gtk.Image
     visible={createBinding(powerprof, "activeProfile")
@@ -80,12 +80,12 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
     pixelSize={18} />
 
   const WeatherIndicator = ({ vertical }:
-    { vertical: boolean }) =>
+    { vertical: Accessor<boolean> | boolean }) =>
     <Gtk.Box orientation={vertical ?
       Gtk.Orientation.VERTICAL :
       Gtk.Orientation.HORIZONTAL}
       spacing={4}
-      cssClasses={["weather", vertical ? "vert" : ""]}>
+    >
       <Gtk.Image
         pixelSize={22}
         iconName={createConnection("content-loading-symbolic",
@@ -132,6 +132,7 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
       <MicrophoneIndicator />
       <AudioIndicator />
       <DNDIndicator />
+      <WeatherIndicator vertical={vertical} />
     </Gtk.Box>
   </Gtk.ToggleButton>
 }
