@@ -4,7 +4,7 @@
     "lint": "eslint . --fix",
     "types": "npx @ts-for-gir/cli generate -o @girs --ignoreVersionConflicts",
     "build": "meson setup --prefix \"$(pwd)/dist\" build --wipe ; meson install -C build",
-    "dev": "cp ./data/io.astal.notifd.gschema.xml ./dist/share/glib-2.0/schemas ; pnpm run build ; GSETTINGS_SCHEMA_DIR=\"$(pwd)/dist/share/glib-2.0/schemas\" ./dist/bin/*"
+    "dev": "cp ./data/*.xml ./dist/share/glib-2.0/schemas ; pnpm run build ; GSETTINGS_SCHEMA_DIR=\"$(pwd)/dist/share/glib-2.0/schemas\" ./dist/bin/*"
   },
   "devDependencies": {
     "@eslint/js": "latest",

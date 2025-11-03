@@ -31,15 +31,14 @@ pkgs.stdenv.mkDerivation {
     };
 
     installPhase = ''
+      mkdir -p $out
       cp -r . $out
     '';
   };
 
   preFixup = ''
-    gappsWrapperArgs+=(
-      --prefix PATH : ${pkgs.lib.makeBinPath wrapperPackages}
-      --prefix LD_PRELOAD : "${pkgs.gtk4-layer-shell}/lib/libgtk4-layer-shell.so"
-    )'';
+    gappsWrapperArgs+=(--prefix PATH :
+       ${pkgs.lib.makeBinPath wrapperPackages})'';
 
   meta.mainProgram = "${pname}";
 }
