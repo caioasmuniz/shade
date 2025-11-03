@@ -1,8 +1,4 @@
-{
-  pkgs,
-  self,
-  ...
-}:
+{ pkgs, ... }:
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -24,39 +20,7 @@
     };
   };
 
-  programs.hyprland.enable = true;
+  programs.shade.enable = true;
 
   system.stateVersion = "25.05";
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = { inherit self; };
-    users.test = {
-      imports = [
-        self.homeManagerModules.default
-        ./hyprland.nix
-        {
-          home.packages = [
-            self.packages.${pkgs.system}.default
-            pkgs.brightnessctl
-          ];
-          programs.home-manager.enable = true;
-          programs.shade = {
-            shell = {
-              enable = true;
-              blur.enable = true;
-              systemd.enable = true;
-            };
-            hyprland.binds.enable = true;
-          };
-          services.darkman.enable = true;
-        }
-      ];
-      home = {
-        username = "test";
-        homeDirectory = "/home/test";
-        stateVersion = "25.05";
-      };
-    };
-  };
 }
