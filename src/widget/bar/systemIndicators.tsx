@@ -6,9 +6,8 @@ import Wireplumber from "gi://AstalWp"
 import PowerProf from "gi://AstalPowerProfiles"
 import Gdk from "gi://Gdk?version=4.0"
 import Gtk from "gi://Gtk?version=4.0"
-import { Accessor, createBinding, createComputed, createConnection } from "gnim"
+import { Accessor, createBinding, createComputed } from "gnim"
 import { app } from "#/App"
-import Weather from "#/lib/weather"
 
 export default ({ vertical }: { vertical: Accessor<boolean> }) => {
   const audio = Wireplumber.get_default()!.audio
@@ -17,7 +16,6 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
   const powerprof = PowerProf.get_default()
   const notifd = Notifd.get_default()
   const bluetooth = Bluetooth.get_default()
-  const weather = Weather.get_default().info
 
   const ProfileIndicator = () => <Gtk.Image
     visible={createBinding(powerprof, "activeProfile")
@@ -79,32 +77,6 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
       .as((p) => (p * 100).toFixed(0).toString() + "%")}
     pixelSize={18} />
 
-  const WeatherIndicator = ({ vertical }:
-    { vertical: Accessor<boolean> | boolean }) =>
-    <Gtk.Box orientation={vertical ?
-      Gtk.Orientation.VERTICAL :
-      Gtk.Orientation.HORIZONTAL}
-      spacing={4}
-    >
-      <Gtk.Image
-        pixelSize={22}
-        iconName={createConnection("content-loading-symbolic",
-          [weather, "updated", () => {
-            return weather.get_icon_name()
-          }]
-        )}
-      />
-      <Gtk.Label
-        cssClasses={["body"]}
-        css={"font-size:0.75rem"}
-        label={createConnection("--",
-          [weather, "updated", () => {
-            return weather.get_temp_summary()
-          }]
-        )}
-      />
-    </Gtk.Box>
-
   return <Gtk.ToggleButton
     cursor={Gdk.Cursor.new_from_name("pointer", null)}
     active={createBinding(app.quicksettings, "visible")}
@@ -132,7 +104,6 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
       <MicrophoneIndicator />
       <AudioIndicator />
       <DNDIndicator />
-      <WeatherIndicator vertical={vertical} />
     </Gtk.Box>
   </Gtk.ToggleButton>
 }

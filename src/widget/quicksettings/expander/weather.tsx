@@ -1,23 +1,29 @@
 import GWeather from "#/lib/weather";
-import Adw from "gi://Adw?version=1";
 import Gtk from "gi://Gtk?version=4.0";
 import { createBinding } from "gnim";
 
 const weather = GWeather.get_default()
 
 export const WeatherIcon = () =>
-  <Gtk.Box spacing={4}>
+  <Gtk.Box
+    spacing={4}
+    hexpand
+    halign={Gtk.Align.CENTER}>
     <Gtk.Image
       iconName={createBinding(weather, "info")
         .as(w => w.get_icon_name())}
       pixelSize={20}
     />
-    <Adw.WindowTitle
-      title={createBinding(weather, "info")
-        .as(w => w.get_temp_summary())}
-      subtitle={createBinding(weather, "info")
-        .as(w => w.get_weather_summary())}
-    />
+    <Gtk.Box orientation={Gtk.Orientation.VERTICAL}>
+      <Gtk.Label
+        label={createBinding(weather, "info")
+          .as(w => w.get_temp_summary())}
+      />
+      <Gtk.Label
+        label={createBinding(weather, "info")
+          .as(w => w.get_weather_summary())}
+      />
+    </Gtk.Box>
   </Gtk.Box>
 
 export const Weather = () => {
