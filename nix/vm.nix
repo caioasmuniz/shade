@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -8,17 +8,8 @@
     initialPassword = "test";
   };
 
-  services.greetd = {
-    enable = true;
-    settings = {
-      intial_session = {
-        command = pkgs.lib.getExe pkgs.hyprland;
-      };
-      default_session = {
-        command = "${pkgs.greetd}/bin/agreety --cmd Hyprland";
-      };
-    };
-  };
+  services.greetd.enable = true;
+  programs.regreet.enable = true;
 
   programs.shade.enable = true;
 

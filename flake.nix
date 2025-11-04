@@ -60,6 +60,7 @@
       wrapperPackages = with pkgs; [
         brightnessctl
         darkman
+        bash
       ];
     in
     {

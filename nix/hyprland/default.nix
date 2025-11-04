@@ -4,9 +4,18 @@
   #   inputs.hyprland.nixosModules.default
   #   ./binds.nix
   # ];
+  programs.uwsm = {
+    enable = true;
+    waylandCompositors.hyprland = {
+      prettyName = "Hyprland";
+      comment = "Hyprland compositor managed by UWSM";
+      binPath = "/run/current-system/sw/bin/Hyprland";
+    };
+  };
 
   programs.hyprland = {
     enable = true;
+    withUWSM = true;
     package = pkgs.hyprland;
     portalPackage = pkgs.xdg-desktop-portal-hyprland;
 
@@ -29,9 +38,9 @@
         "special:scratchpad, on-created-empty: [pseudo; size 1920 1080] ghostty"
       ];
 
-    bind = [
-      "ALTSHIFT,Return,exec,${pkgs.lib.getExe pkgs.ghostty}"
-    ];
+      bind = [
+        "ALTSHIFT,Return,exec,${pkgs.lib.getExe pkgs.ghostty}"
+      ];
       input = {
         kb_layout = "br,us";
         follow_mouse = 1;
@@ -87,15 +96,16 @@
       animations = {
         enabled = true;
         workspace_wraparound = true;
-        animation = [
-          "windows,1,5,default,slide"
-          "layers,1,5,default,slide"
-          "border,1,10,default"
-          "fadePopups,1,5,default"
-          "workspaces,1,5,default,slidevert"
-          "monitorAdded,1,5,default"
-        ];
       };
+
+      animation = [
+        "windows,1,5,default,slide"
+        "layers,1,5,default,slide"
+        "border,1,10,default"
+        "fadePopups,1,5,default"
+        "workspaces,1,5,default,slidevert"
+        "monitorAdded,1,5,default"
+      ];
 
       binds = {
         hide_special_on_workspace_change = true;
