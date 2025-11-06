@@ -2,6 +2,7 @@ import Adw from "gi://Adw?version=1";
 import Gtk from "gi://Gtk?version=4.0";
 import Bar from "./bar";
 import { app } from "#/App";
+import Weather from "./weather";
 
 export default () => {
   return <Adw.Window
@@ -21,6 +22,7 @@ export default () => {
       <Adw.PreferencesPage>
         {/* <General /> */}
         <Bar />
+        <Weather />
       </Adw.PreferencesPage>
     </Gtk.Box>
   </Adw.Window >
