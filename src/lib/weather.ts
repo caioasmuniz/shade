@@ -1,5 +1,6 @@
 import GWeather from "gi://GWeather?version=4.0"
 import GObject, { getter, register, setter } from "gnim/gobject"
+import { useSettings } from "./settings";
 
 @register({ GTypeName: "Weather" })
 export default class Weather extends GObject.Object {
@@ -12,6 +13,7 @@ export default class Weather extends GObject.Object {
   }
 
   #weather: GWeather.Info
+  #location: GWeather.Location | undefined
 
   @getter(GWeather.Info)
   get info() {
@@ -19,16 +21,28 @@ export default class Weather extends GObject.Object {
   }
 
   @setter(GWeather.Location)
-  set location(location: GWeather.Location) {
+  set location(location: GWeather.Location | undefined) {
+    if (!location) return
+    this.#location = location
     this.#weather.set_location(location)
     this.#weather.update()
     this.notify("location")
   }
 
+  public init() {
+    this.#weather.set_location(
+      this.#location?.find_nearest_city(
+        useSettings().weather.latitude.get(),
+        useSettings().weather.longitude.get()
+      ))
+    this.#weather.update()
+  }
+
   constructor() {
     super()
 
-    this.#weather = GWeather.Info.new(GWeather.Location.get_world())
+    this.#location = GWeather.Location.get_world() ?? undefined
+    this.#weather = GWeather.Info.new(this.#location)
 
     this.#weather.set_application_id(import.meta.domain)
     this.#weather.set_enabled_providers(GWeather.Provider.MET_NO)
