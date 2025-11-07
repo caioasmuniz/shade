@@ -10,6 +10,7 @@ import SystemUsage from "./systemUsage";
 import Workspaces from "./workspaces";
 import Clock from "./clock";
 import Launcher from "./launcher";
+import { WeatherButton } from "./weather";
 
 export default () => {
   const { position } = useSettings().bar
@@ -74,7 +75,8 @@ export default () => {
             orientation={vertical.as(v => v ?
               Gtk.Orientation.VERTICAL :
               Gtk.Orientation.HORIZONTAL)}>
-
+            <WeatherButton vertical={vertical} />
+            <Gtk.Separator />
             <Clock vertical={vertical} />
             <Gtk.Separator />
             <SystemIndicators vertical={vertical} />

@@ -53,6 +53,8 @@
           glib
           libadwaita
           libgtop
+          libgweather
+          glib-networking
           gtk4
           gtk4-layer-shell
           gjs
@@ -61,10 +63,7 @@
         ]
         ++ astalPackages;
 
-      wrapperPackages = with pkgs; [
-        brightnessctl
-        darkman
-      ];
+      wrapperPackages = [ pkgs.brightnessctl ];
     in
     {
       packages.${system} = {
