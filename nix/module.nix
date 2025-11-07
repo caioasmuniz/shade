@@ -56,7 +56,6 @@ in
         environment.systemPackages = [
           pkg
           pkgs.adwaita-icon-theme
-          pkgs.darkman
         ];
       })
       (lib.mkIf cfg.shell.systemd.enable {

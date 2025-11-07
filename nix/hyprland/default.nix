@@ -4,6 +4,9 @@
   #   inputs.hyprland.nixosModules.default
   #   ./binds.nix
   # ];
+
+  services.power-profiles-daemon.enable = true;
+
   programs.uwsm = {
     enable = true;
     waylandCompositors.hyprland = {
@@ -23,12 +26,6 @@
       pkgs.hyprlandPlugins.hypr-dynamic-cursors
     ];
 
-    # systemd = {
-    #   enable = true;
-    #   variables = [ "--all" ];
-    #   enableXdgAutostart = true;
-    # };
-
     settings = {
       monitor = [
         ", preferred, auto-left, auto"
@@ -39,7 +36,7 @@
       ];
 
       bind = [
-        "ALTSHIFT,Return,exec,${pkgs.lib.getExe pkgs.ghostty}"
+        "SUPERSHIFT,Return,exec,${pkgs.lib.getExe pkgs.ghostty}"
       ];
       input = {
         kb_layout = "br,us";
