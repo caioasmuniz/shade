@@ -4,11 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     astal.url = "github:aylur/astal";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs =
@@ -26,7 +22,7 @@
         apps
         battery
         bluetooth
-        hyprland
+        astal.packages.${system}.hyprland
         mpris
         network
         notifd
@@ -37,7 +33,7 @@
       ];
 
       nativeBuildInputs = with pkgs; [
-        wrapGAppsHook
+        wrapGAppsHook4
         gobject-introspection
         meson
         pkg-config
@@ -63,7 +59,10 @@
         ]
         ++ astalPackages;
 
-      wrapperPackages = [ pkgs.brightnessctl ];
+      wrapperPackages = with pkgs; [
+        brightnessctl
+        bash
+      ];
     in
     {
       packages.${system} = {
@@ -77,11 +76,7 @@
         };
       };
 
-      homeManagerModules = {
-        hyprland = import ./nix/hyprland.nix;
-        shade = import ./nix/hm-module.nix self;
-        default = self.homeManagerModules.shade;
-      };
+      nixosModules.default = import ./nix/module.nix inputs;
 
       devShells.${system} = import ./nix/devshell.nix {
         inherit
@@ -93,12 +88,9 @@
       };
       nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = {
-          inherit self;
-        };
         modules = [
           ./nix/vm.nix
-          inputs.home-manager.nixosModules.home-manager
+          self.nixosModules.default
         ];
       };
     };
