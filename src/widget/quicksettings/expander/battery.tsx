@@ -1,4 +1,3 @@
-import Adw from "gi://Adw?version=1";
 import AstalBattery from "gi://AstalBattery";
 import GLib from "gi://GLib";
 import Gtk from "gi://Gtk?version=4.0";
@@ -14,23 +13,30 @@ const timeTo = createComputed([
     charging ? timeToFull : -timeToEmpty)
 
 export const BatteryIcon = () =>
-  <Gtk.Box spacing={4}
+  <Gtk.Box
+    spacing={4}
+    hexpand
+    halign={Gtk.Align.CENTER}
     visible={createBinding(battery, "isPresent")}>
     <Gtk.Image
       iconName={createBinding(battery, "iconName")}
       pixelSize={20}
     />
-    <Adw.WindowTitle
-      title={createBinding(battery, "percentage")
-        .as(p => (p * 100).toString() + "%")}
-      subtitle={timeTo(timeTo =>
-        timeTo == 0 ? "" :
-          (GLib.DateTime
-            .new_from_unix_utc(timeTo)
-            .format("%T")) +
-          (timeTo < 0 ? " to empty" : " to full")
-      )}
-    />
+    <Gtk.Box orientation={Gtk.Orientation.VERTICAL}>
+      <Gtk.Label
+        label={createBinding(battery, "percentage")
+          .as(p => (p * 100).toString() + "%")}
+      />
+      <Gtk.Label
+        label={timeTo(timeTo =>
+          timeTo === 0 ? "Full" :
+            (GLib.DateTime
+              .new_from_unix_utc(timeTo)
+              .format("%T")) +
+            (timeTo < 0 ? " to empty" : " to full")
+        )}
+      />
+    </Gtk.Box>
   </Gtk.Box>
 
 export const Battery = () => <Gtk.Box

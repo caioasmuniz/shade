@@ -49,6 +49,8 @@
           glib
           libadwaita
           libgtop
+          libgweather
+          glib-networking
           gtk4
           gtk4-layer-shell
           gjs
@@ -59,7 +61,6 @@
 
       wrapperPackages = with pkgs; [
         brightnessctl
-        darkman
         bash
       ];
     in

@@ -3,6 +3,8 @@ import { createState } from "gnim"
 import { Battery, BatteryIcon } from "./battery"
 // import { Media, MediaIcon } from "./media"
 import { Calendar, CalendarIcon } from "./calendar"
+import { Weather, WeatherIcon } from "./weather"
+import Adw from "gi://Adw?version=1"
 
 export const Expander = () => {
   const [visible, setVisible] = createState(false)
@@ -13,14 +15,15 @@ export const Expander = () => {
     active={visible}
     cssClasses={["flat"]}>
     <Gtk.Box>
-      <Gtk.Box
+      <Adw.WrapBox
         halign={Gtk.Align.CENTER}
-        spacing={4}
+        // spacing={4}
         hexpand>
         {/* <MediaIcon /> */}
         <CalendarIcon />
         <BatteryIcon />
-      </Gtk.Box>
+        <WeatherIcon />
+      </Adw.WrapBox>
       <Gtk.Image
         halign={Gtk.Align.END}
         iconName={visible.as(v =>
@@ -37,8 +40,9 @@ export const Expander = () => {
         spacing={4}
         orientation={Gtk.Orientation.VERTICAL}>
         {/* <Media /> */}
-        <Calendar />
         <Battery />
+        <Weather />
+        <Calendar />
       </Gtk.Box>
     </Gtk.Revealer>
   </Gtk.Box>
