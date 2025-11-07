@@ -75,9 +75,9 @@ export default () => {
             orientation={vertical.as(v => v ?
               Gtk.Orientation.VERTICAL :
               Gtk.Orientation.HORIZONTAL)}>
-            <WeatherButton vertical={vertical} />
-            <Gtk.Separator />
             <Clock vertical={vertical} />
+            <Gtk.Separator />
+            <WeatherButton vertical={vertical} />
             <Gtk.Separator />
             <SystemIndicators vertical={vertical} />
 
