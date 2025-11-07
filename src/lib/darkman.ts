@@ -71,13 +71,14 @@ export default class DarkMode extends Object {
       Math.abs(GLib.DateTime.new_from_unix_local(unixTime)
         .difference(GLib.DateTime.new_now_local()))
 
-    const sunrise = msUntil(this.#weather.info.get_value_sunrise()[1])
-    const sunset = msUntil(this.#weather.info.get_value_sunset()[1])
+    const interval = this.#daytime ?
+      msUntil(this.#weather.info.get_value_sunset()[1])
+      : msUntil(this.#weather.info.get_value_sunrise()[1])
 
     setTimeout(() => {
       this.#daytime = !this.#daytime
       this.timeout()
-    }, this.#daytime ? sunset : sunrise);
+    }, interval);
   }
 
   constructor() {

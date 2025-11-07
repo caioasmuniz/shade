@@ -39,10 +39,9 @@ export default () => {
   >
     <Adw.ButtonContent
       iconName={createBinding(darkman, "iconName")}
-      label={createBinding(darkman, "colorScheme")(c =>
-        c === DarkModes.DARK ?
-          "Dark Mode" :
-          "Light Mode")} />
+      label={createBinding(darkman, "colorScheme")
+        .as(c => c === DarkModes.DARK ?
+          "Dark Mode" : "Light Mode")}
+    />
   </Adw.SplitButton>
-
 }
