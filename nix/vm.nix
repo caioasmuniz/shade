@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -8,8 +8,16 @@
     initialPassword = "test";
   };
 
-  services.greetd.enable = true;
   programs.regreet.enable = true;
+  services.greetd = {
+    enable = true;
+    settings = {
+      initial_session = {
+        command = "${pkgs.uwsm}/bin/uwsm start hyprland-uwsm.desktop";
+        user = "test";
+      };
+    };
+  };
 
   programs.shade.enable = true;
 
