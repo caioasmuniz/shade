@@ -35,4 +35,13 @@ export const weatherSchema = new Schema({
     default: 0.0,
   })
 
-export default defineSchemaList([barSchema, weatherSchema])
+
+export const generalSchema = new Schema({
+  id: id + ".general",
+  path: path + "general/"
+})
+  .key("color-scheme", "i", {
+    default: 0,
+  })
+
+export default defineSchemaList([barSchema, generalSchema, weatherSchema])
