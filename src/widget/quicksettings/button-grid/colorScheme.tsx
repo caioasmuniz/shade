@@ -10,7 +10,7 @@ export default () => {
   return <Adw.SplitButton
     cssClasses={["raised"]}
     popover={
-      <Gtk.Popover>
+      <Gtk.Popover cssClasses={[]}>
         <Gtk.Box
           orientation={Gtk.Orientation.VERTICAL}
           cssClasses={["linked"]}>

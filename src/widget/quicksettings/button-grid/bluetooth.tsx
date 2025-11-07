@@ -19,7 +19,7 @@ export default () => <Adw.SplitButton
     })
   }}
   popover={
-    <Gtk.Popover>
+    <Gtk.Popover cssClasses={[]}>
       <Gtk.Box cssClasses={["linked"]}
         orientation={Gtk.Orientation.VERTICAL}>
         <For each={createBinding(bluetooth, "devices")}>

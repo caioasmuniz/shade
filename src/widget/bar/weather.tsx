@@ -17,6 +17,7 @@ export const WeatherButton = ({ vertical }:
     popover={<Gtk.Popover
       valign={Gtk.Align.CENTER}
       halign={Gtk.Align.CENTER}
+      cssClasses={[]}
       hasArrow={false}>
       <WeatherWidget />
     </Gtk.Popover> as Gtk.Popover}>
