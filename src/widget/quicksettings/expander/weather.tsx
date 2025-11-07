@@ -2,13 +2,13 @@ import GWeather from "#/lib/weather";
 import Gtk from "gi://Gtk?version=4.0";
 import { createBinding } from "gnim";
 
-const weather = GWeather.get_default()
 
-export const WeatherIcon = () =>
-  <Gtk.Box
+export const WeatherIcon = () => {
+  const weather = GWeather.get_default()
+  return < Gtk.Box
     spacing={4}
     hexpand
-    halign={Gtk.Align.CENTER}>
+    halign={Gtk.Align.CENTER} >
     <Gtk.Image
       iconName={createBinding(weather, "info")
         .as(w => w.get_icon_name())}
@@ -24,9 +24,11 @@ export const WeatherIcon = () =>
           .as(w => w.get_weather_summary())}
       />
     </Gtk.Box>
-  </Gtk.Box>
+  </Gtk.Box >
+}
 
 export const Weather = () => {
+  const weather = GWeather.get_default()
   const weatherInfo = createBinding(weather, "info")
   const InfoBox = () =>
     <Gtk.Box

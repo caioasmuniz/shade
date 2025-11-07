@@ -29,19 +29,14 @@ export default class Weather extends GObject.Object {
     this.notify("location")
   }
 
-  public init() {
-    this.#weather.set_location(
-      this.#location?.find_nearest_city(
-        useSettings().weather.latitude.get(),
-        useSettings().weather.longitude.get()
-      ))
-    this.#weather.update()
-  }
-
   constructor() {
     super()
 
-    this.#location = GWeather.Location.get_world() ?? undefined
+    this.#location = GWeather.Location.get_world()
+      ?.find_nearest_city(
+        useSettings().weather.latitude.get(),
+        useSettings().weather.longitude.get())
+
     this.#weather = GWeather.Info.new(this.#location)
 
     this.#weather.set_application_id(import.meta.domain)

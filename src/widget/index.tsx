@@ -1,4 +1,3 @@
-import Weather from "#/lib/weather"
 import applauncher from "./applauncher"
 import bar from "./bar"
 import notifications from "./notifications"
@@ -7,8 +6,6 @@ import quicksettings from "./quicksettings"
 import settings from "./settings"
 
 export const widgets = () => {
-  Weather.get_default().init()
-  
   osd()
   applauncher()
   notifications()
