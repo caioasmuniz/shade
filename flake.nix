@@ -63,10 +63,7 @@
         ]
         ++ astalPackages;
 
-      wrapperPackages = with pkgs; [
-        brightnessctl
-        darkman
-      ];
+      wrapperPackages = [ pkgs.brightnessctl ];
     in
     {
       packages.${system} = {
