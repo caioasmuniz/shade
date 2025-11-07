@@ -49,7 +49,9 @@ export class ColorScheme extends Object {
   set colorScheme(c) {
     this.#colorScheme = c
     if (c === DarkModes.AUTO)
-      this.colorScheme = this.#daytime ? 1 : 2
+      c = this.#daytime ?
+        DarkModes.LIGHT :
+        DarkModes.DARK
     if (c === DarkModes.LIGHT) {
       this.#gsettings.setColorScheme("prefer-light")
       this.#gsettings.setGtkTheme("Adwaita")
@@ -99,6 +101,7 @@ export class ColorScheme extends Object {
     this.#daytime = this.#weather.info.is_daytime()
     const settings = useSettings().general.colorScheme
     this.colorScheme = settings.get()
+
     settings.subscribe(() =>
       this.colorScheme = settings.get())
 
