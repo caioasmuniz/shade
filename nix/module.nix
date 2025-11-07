@@ -8,10 +8,13 @@ inputs:
 let
   cfg = config.programs.shade;
   pkg = inputs.self.packages.${pkgs.system}.default;
-  hypr = import ./hyprland { inherit pkgs inputs; };
 in
 {
-  imports = [ inputs.hyprland.nixosModules.default ];
+  imports = [
+    inputs.hyprland.nixosModules.default
+    ./hyprland
+  ];
+
   options.programs.shade = {
     enable = lib.mkEnableOption "Enables the shade desktop environment";
     shell = {
@@ -32,20 +35,6 @@ in
         default = true;
         description = ''
           Enable systemd integration.
-        '';
-      };
-    };
-    hyprland = {
-      enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Enable hyprland compositor";
-      };
-      binds.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = ''
-          Enable default binds to toggle the widgets in hyprland.
         '';
       };
     };
@@ -86,19 +75,6 @@ in
         programs.hyprland.extraConfig = ''
           layerrule=blur,gtk4-layer-shell
           layerrule=ignorezero,gtk4-layer-shell
-        '';
-      })
-
-      (lib.mkIf cfg.hyprland.enable hypr)
-
-      (lib.mkIf cfg.hyprland.binds.enable {
-        programs.hyprland.extraConfig = ''
-          bind=SUPER,Space,exec, shade-shell toggle applauncher
-          bind=SUPER,n,exec, shade-shell toggle quicksettings
-          bind=SUPER,w,exec, shade-shell toggle bar
-
-          gesture= 3,right, dispatcher,exec, shade-shell toggle applauncher
-          gesture= 3,left, dispatcher,exec, shade-shell toggle quicksettings
         '';
       })
     ]
