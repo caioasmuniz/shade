@@ -54,6 +54,9 @@ in
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
+        programs.hyprland.settings = cfg.settings;
+      }
+      {
         services.power-profiles-daemon.enable = true;
 
         xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
@@ -82,7 +85,7 @@ in
             pkgs.hyprlandPlugins.hypr-dynamic-cursors
           ];
 
-          settings = cfg.settings // {
+          settings = {
             monitor = [
               ", preferred, auto-left, auto"
             ];
