@@ -1,11 +1,14 @@
 { pkgs, lib, ... }:
+let
+  uwsm-app = { app }: "${pkgs.uwsm}/bin/uwsm-app -t service --${app}.desktop";
+in
 {
   programs.hyprland.settings = {
     bind = [
-      "SUPER,Return,exec,${lib.getExe pkgs.ghostty}"
-      "SUPERSHIFT,B,exec,${lib.getExe pkgs.firefox}"
+      "SUPER,Return,exec,${uwsm-app "com.mitchellh.ghostty"}"
+      "SUPERSHIFT,B,exec,${uwsm-app "firefox"}"
       "SUPER,V,exec,pkill pwvucontrol || pwvucontrol"
-      "SUPER,E,exec,nautilus"
+      "SUPER,E,exec,${uwsm-app "org.gnome.Nautilus"}"
       "SUPERSHIFT,v,exec,pkill wvkbd || ${lib.getExe pkgs.wvkbd}"
 
       "SUPER, PRINT, exec, ${lib.getExe pkgs.hyprshot} -m window"

@@ -65,7 +65,9 @@ in
           ];
 
           serviceConfig = {
+            Type = "dbus";
             ExecStart = "${lib.getExe pkg}";
+            BusName = "com.caioasmuniz.shade_shell";
             Restart = "on-failure";
             KillMode = "mixed";
           };

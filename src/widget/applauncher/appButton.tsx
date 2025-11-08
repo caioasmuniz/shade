@@ -12,10 +12,7 @@ export default ({ application }: { application: Apps.Application }) =>
       app.applauncher.visible = false;
       application.frequency += 1
       GLib.spawn_command_line_async(
-        `systemd-run --user
-          -u ${application.entry.slice(0, -8)}  
-          --slice-inherit
-          ${application.executable.split(" ").at(0)}`
+        `uwsm-app -t service -- ${application.entry}`
       )
     }}>
     <Gtk.Box spacing={8}>

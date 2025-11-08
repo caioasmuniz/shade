@@ -4,7 +4,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   users.users.test = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" ];
     initialPassword = "test";
   };
 
@@ -13,16 +13,23 @@
     enable = true;
     settings = {
       initial_session = {
-        command = "${pkgs.uwsm}/bin/uwsm start hyprland-uwsm.desktop";
+        command = "${lib.getExe pkgs.uwsm} start hyprland-uwsm.desktop";
         user = "test";
       };
     };
   };
 
+  environment.systemPackages = [
+    pkgs.firefox
+    pkgs.moonlight-qt
+    pkgs.ghostty
+  ];
+
   programs.shade.enable = true;
   programs.shade.hyprland.settings = {
     bind = [
-      "SUPERSHIFT,Return,exec,${lib.getExe pkgs.ghostty}"
+      "SUPERSHIFT,Return,exec,${lib.getExe pkgs.uwsm} app -- ghostty"
+      "SUPERSHIFT,B,exec,${lib.getExe pkgs.uwsm} app -- firefox"
     ];
   };
 
