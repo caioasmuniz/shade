@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -20,6 +20,11 @@
   };
 
   programs.shade.enable = true;
+  programs.shade.hyprland.settings = {
+    bind = [
+      "SUPERSHIFT,Return,exec,${lib.getExe pkgs.ghostty}"
+    ];
+  };
 
   system.stateVersion = "25.05";
 }

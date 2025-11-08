@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.programs.shade;
+  cfg = config.programs.shade.hyprland;
 in
 {
   imports = [
@@ -18,7 +18,7 @@ in
       default = true;
       description = "Enable hyprland compositor";
     };
-    extraSettings = lib.mkOption {
+    settings = lib.mkOption {
       type =
         with lib.types;
         let
@@ -82,7 +82,7 @@ in
             pkgs.hyprlandPlugins.hypr-dynamic-cursors
           ];
 
-          settings = {
+          settings = cfg.settings // {
             monitor = [
               ", preferred, auto-left, auto"
             ];
@@ -213,10 +213,7 @@ in
           };
         };
       }
-      (lib.mkIf cfg.hyprland.extraSettings.enable {
-        programs.hyprland.settings = cfg.extraSettings;
-      })
-      (lib.mkIf cfg.hyprland.binds.enable {
+      (lib.mkIf cfg.binds.enable {
         programs.hyprland.extraConfig = ''
           bind=SUPER,Space,exec, shade-shell toggle applauncher
           bind=SUPER,n,exec, shade-shell toggle quicksettings
