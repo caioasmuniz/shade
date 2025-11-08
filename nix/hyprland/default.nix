@@ -31,6 +31,13 @@ in
     lib.mkMerge [
       {
         services.power-profiles-daemon.enable = true;
+        
+        xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+        environment.sessionVariables = {
+          MOZ_ENABLE_WAYLAND = "1";
+          NIXOS_OZONE_WL = "1";
+          SDL_VIDEODRIVER = "wayland";
+        };
 
         programs.uwsm = {
           enable = true;
