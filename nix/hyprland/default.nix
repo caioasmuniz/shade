@@ -18,6 +18,30 @@ in
       default = true;
       description = "Enable hyprland compositor";
     };
+    extraSettings = lib.mkOption {
+      type =
+        with lib.types;
+        let
+          valueType =
+            nullOr (oneOf [
+              bool
+              int
+              float
+              str
+              path
+              (attrsOf valueType)
+              (listOf valueType)
+            ])
+            // {
+              description = "Hyprland configuration value";
+            };
+        in
+        valueType;
+      default = { };
+      description = ''
+        Extra settings to hyprland.
+      '';
+    };
     binds.enable = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -31,7 +55,7 @@ in
     lib.mkMerge [
       {
         services.power-profiles-daemon.enable = true;
-        
+
         xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
         environment.sessionVariables = {
           MOZ_ENABLE_WAYLAND = "1";
@@ -67,9 +91,6 @@ in
               "special:scratchpad, on-created-empty: [pseudo; size 1920 1080] ghostty"
             ];
 
-            bind = [
-              "SUPERSHIFT,Return,exec,${pkgs.lib.getExe pkgs.ghostty}"
-            ];
             input = {
               kb_layout = "br,us";
               follow_mouse = 1;
@@ -192,6 +213,9 @@ in
           };
         };
       }
+      (lib.mkIf cfg.hyprland.extraSettings.enable {
+        programs.hyprland.settings = cfg.extraSettings;
+      })
       (lib.mkIf cfg.hyprland.binds.enable {
         programs.hyprland.extraConfig = ''
           bind=SUPER,Space,exec, shade-shell toggle applauncher

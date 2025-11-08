@@ -2,7 +2,7 @@
 {
   programs.hyprland.settings = {
     bind = [
-      "SUPERSHIFT,Return,exec,${lib.getExe pkgs.ghostty}"
+      "SUPER,Return,exec,${lib.getExe pkgs.ghostty}"
       "SUPERSHIFT,B,exec,${lib.getExe pkgs.firefox}"
       "SUPER,V,exec,pkill pwvucontrol || pwvucontrol"
       "SUPER,E,exec,nautilus"
