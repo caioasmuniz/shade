@@ -6,7 +6,7 @@ in
   programs.hyprland.settings = {
     bind = [
       "SUPER,Return,exec,${uwsm-app "com.mitchellh.ghostty"}"
-      "SUPERSHIFT,B,exec,${uwsm-app "firefox"}"
+      "SUPER,B,exec,${uwsm-app "firefox"}"
       "SUPER,V,exec,pkill pwvucontrol || pwvucontrol"
       "SUPER,E,exec,${uwsm-app "org.gnome.Nautilus"}"
       "SUPERSHIFT,v,exec,pkill wvkbd || ${lib.getExe pkgs.wvkbd}"
@@ -71,8 +71,6 @@ in
     bindle = [
       ", XF86AudioRaiseVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%+"
       ", XF86AudioLowerVolume, exec, wpctl set-volume -l '1.0' @DEFAULT_AUDIO_SINK@ 5%-"
-      "SHIFT, XF86AudioRaiseVolume, exec, swayosd-client --input-volume raise 5"
-      "SHIFT, XF86AudioLowerVolume, exec, swayosd-client --input-volume lower 5"
     ];
 
     bindm = [
