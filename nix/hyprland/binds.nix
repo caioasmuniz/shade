@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  uwsm-app = app : "${pkgs.uwsm}/bin/uwsm-app -t service --${app}.desktop";
+  uwsm-app = app : "${pkgs.uwsm}/bin/uwsm-app -t service -- ${app}.desktop";
 in
 {
   programs.hyprland.settings = {
