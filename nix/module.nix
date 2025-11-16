@@ -30,13 +30,6 @@ in
           Enable layer rules to blur the widget's background in hyprland.
         '';
       };
-      systemd.enable = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = ''
-          Enable systemd integration.
-        '';
-      };
     };
   };
   config = lib.mkIf cfg.enable (
@@ -46,32 +39,7 @@ in
           pkg
           pkgs.adwaita-icon-theme
         ];
-      })
-      (lib.mkIf cfg.shell.systemd.enable {
-        systemd.user.services.shade-shell = {
-          enable = true;
-          description = "shade Desktop Shell";
-
-          after = [ "graphical-session-pre.target" ];
-
-          wantedBy = [
-            "graphical-session.target"
-            "tray.target"
-          ];
-
-          partOf = [
-            "graphical-session.target"
-            "tray.target"
-          ];
-
-          serviceConfig = {
-            Type = "dbus";
-            ExecStart = "${lib.getExe pkg}";
-            BusName = "com.caioasmuniz.shade_shell";
-            Restart = "on-failure";
-            KillMode = "mixed";
-          };
-        };
+        programs.hyprland.settings.exec = [ "uwsm-app -t service -- shade-shell" ];
       })
       (lib.mkIf cfg.shell.blur.enable {
         programs.hyprland.extraConfig = ''
