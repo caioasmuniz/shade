@@ -50,6 +50,8 @@
           libadwaita
           libgtop
           libgweather
+          libglycin
+          glycin-loaders
           glib-networking
           gtk4
           gtk4-layer-shell

@@ -4,6 +4,7 @@ import notifications from "./notifications"
 import osd from "./osd"
 import quicksettings from "./quicksettings"
 import settings from "./settings"
+import { Wallpaper } from "./wallpaper"
 
 export const widgets = () => {
   osd()
@@ -11,5 +12,6 @@ export const widgets = () => {
   notifications()
   quicksettings()
   bar()
+  Wallpaper()
   settings()
 }
