@@ -9,7 +9,6 @@ export default () => {
   return <Adw.Window
     $={self => app.settings = self}
     hideOnClose
-    visible
     name={"settings"}
     application={app}
     cssClasses={["background"]}

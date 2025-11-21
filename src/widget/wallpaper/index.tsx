@@ -31,12 +31,10 @@ export const Wallpaper = () => {
   >
     <Gtk.Picture
       file={wp}
-      // paintable={GlyGtk4.frame_get_texture(image.next_frame())}
       contentFit={Gtk.ContentFit.COVER}
     />
   </Astal.Window>
 }
-
 
 export const GlyWallpaper = () => {
   const file = Gio.File.new_for_path("./assets/catalina.heic")
