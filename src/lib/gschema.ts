@@ -43,5 +43,11 @@ export const generalSchema = new Schema({
   .key("color-scheme", "i", {
     default: 0,
   })
+  .key("wallpaper-day", "s", {
+    default: "",
+  })
+  .key("wallpaper-night", "s", {
+    default: "",
+  })
 
 export default defineSchemaList([barSchema, generalSchema, weatherSchema])
