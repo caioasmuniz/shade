@@ -40,7 +40,10 @@ custom_target(
   input: configure_file(
     input: 'src/lib/gschema.ts',
     output: domain + '.gschema.ts',
-    configuration: {'domain': domain},
+    configuration: {
+      'domain': domain,
+      'datadir': datadir,
+    },
   ),
   command: [
     find_program('gjs'),
@@ -62,6 +65,8 @@ configure_file(
   install: true,
   install_dir: datadir / 'applications',
 )
+
+install_data(['data/wp-day.jpg', 'data/wp-night.jpg'])
 
 import('gnome').post_install(
   # gtk_update_icon_cache: true,

@@ -1,6 +1,7 @@
 import { defineSchemaList, Schema } from "gnim-schemas"
 
 const id = import.meta.domain || "@domain@"
+const datadir = import.meta.datadir || "@datadir@"
 const path = `/${id.replaceAll(".", "/")}/`
 
 export const barSchema = new Schema({
@@ -35,13 +36,18 @@ export const weatherSchema = new Schema({
     default: 0.0,
   })
 
-
 export const generalSchema = new Schema({
   id: id + ".general",
   path: path + "general/"
 })
   .key("color-scheme", "i", {
     default: 0,
+  })
+  .key("wallpaper-day", "s", {
+    default: `${datadir}/shade-shell/wp-day.jpg`,
+  })
+  .key("wallpaper-night", "s", {
+    default: `${datadir}/shade-shell/wp-night.jpg`,
   })
 
 export default defineSchemaList([barSchema, generalSchema, weatherSchema])
