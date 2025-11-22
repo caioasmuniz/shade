@@ -36,24 +36,26 @@ export default () => {
     <Adw.ActionRow
       activatable
       title={"Wallpaper Day"}
+      subtitle={settings.wallpaperDay}
       iconName={"image-x-generic-symbolic"}
       onActivated={() => {
         fileDialog.open(app.settings, null, (_, res) =>
           settings.setWallpaperDay(
             fileDialog.open_finish(res).get_path() ?? ""))
       }}>
-      <Gtk.Image file={settings.wallpaperDay} />
+      {/* <Gtk.Image file={settings.wallpaperDay} /> */}
     </Adw.ActionRow>
     <Adw.ActionRow
       activatable
       title={"Wallpaper Night"}
+      subtitle={settings.wallpaperNight}
       iconName={"image-x-generic-symbolic"}
       onActivated={() => {
         fileDialog.open(app.settings, null, (_, res) =>
           settings.setWallpaperNight(
             fileDialog.open_finish(res).get_path() ?? ""))
       }}>
-      <Gtk.Image file={settings.wallpaperNight} />
+      {/* <Gtk.Image file={settings.wallpaperNight} /> */}
     </Adw.ActionRow>
   </Adw.PreferencesGroup>
 }
