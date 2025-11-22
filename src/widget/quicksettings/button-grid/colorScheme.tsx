@@ -9,11 +9,28 @@ export default () => {
 
   return <Adw.SplitButton
     cssClasses={["raised"]}
+    widthRequest={150}
+    onClicked={() => {
+      if (colorScheme.colorScheme === DarkModes.LIGHT)
+        return colorScheme.colorScheme = DarkModes.DARK
+      if (colorScheme.colorScheme === DarkModes.DARK)
+        return colorScheme.colorScheme = DarkModes.LIGHT
+      else if (colorScheme.daytime)
+        colorScheme.colorScheme = DarkModes.DARK
+      else
+        colorScheme.colorScheme = DarkModes.LIGHT
+    }}
     popover={
       <Gtk.Popover cssClasses={[]}>
         <Gtk.Box
-          orientation={Gtk.Orientation.VERTICAL}
-          cssClasses={["linked"]}>
+          cssClasses={["linked"]}
+          orientation={Gtk.Orientation.VERTICAL}>
+          <Gtk.Button onClicked={() =>
+            colorScheme.colorScheme = DarkModes.AUTO}>
+            <Adw.ButtonContent
+              iconName={"night-light-symbolic"}
+              label="Automatic" />
+          </Gtk.Button>
           <Gtk.Button onClicked={() =>
             colorScheme.colorScheme = DarkModes.LIGHT}>
             <Adw.ButtonContent
@@ -28,20 +45,18 @@ export default () => {
           </Gtk.Button>
         </Gtk.Box>
       </Gtk.Popover> as Gtk.Popover}
-    widthRequest={150}
-    $={self =>
-      self.connect("clicked", () => {
-        if (colorScheme.colorScheme === DarkModes.LIGHT)
-          colorScheme.colorScheme = DarkModes.DARK
-        else
-          colorScheme.colorScheme = DarkModes.LIGHT
-      })}
   >
     <Adw.ButtonContent
       iconName={createBinding(colorScheme, "iconName")}
       label={createBinding(colorScheme, "colorScheme")
-        .as(c => c === DarkModes.DARK ?
-          "Dark Mode" : "Light Mode")}
+        .as(c => {
+          if (c === DarkModes.AUTO)
+            return "Auto"
+          if (c === DarkModes.LIGHT)
+            return "Light Mode"
+          else
+            return "Dark Mode"
+        })}
     />
   </Adw.SplitButton>
 }

@@ -11,11 +11,17 @@ export const Wallpaper = () => {
   const settings = useSettings().general
   const wp = createComputed([
     createBinding(ColorScheme.get_default(), "colorScheme"),
+    createBinding(ColorScheme.get_default(), "daytime"),
     settings.wallpaperDay,
     settings.wallpaperNight],
-    (color, wpDay, wpNight) => Gio.File.new_for_path(
-      color === DarkModes.LIGHT ? wpDay : wpNight
-    )
+    (color, daytime, wpDay, wpNight) => {
+      if (color === DarkModes.AUTO)
+        return Gio.File.new_for_path(daytime ? wpDay : wpNight)
+      if (color === DarkModes.LIGHT)
+        return Gio.File.new_for_path(wpDay)
+      else
+        return Gio.File.new_for_path(wpNight)
+    }
   )
 
   return <Astal.Window

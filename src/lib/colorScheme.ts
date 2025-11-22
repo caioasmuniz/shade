@@ -33,6 +33,12 @@ export class ColorScheme extends Object {
     return this.#colorScheme;
   }
 
+  @getter(Boolean)
+  get daytime() {
+    return this.#daytime;
+  }
+
+
   @getter(String)
   get colorSchemeName() {
     switch (this.#colorScheme) {
@@ -60,11 +66,17 @@ export class ColorScheme extends Object {
       this.#gsettings.setGtkTheme("Adwaita-dark")
     }
     this.notify("color-scheme")
+    this.notify("color-scheme-name")
+    this.notify("icon-name")
   }
 
   @getter(String)
   get iconName() {
-    if (this.#daytime) return "weather-clear-symbolic"
+    if (this.#colorScheme === DarkModes.AUTO)
+      if (this.#daytime) return "weather-clear-symbolic"
+      else return "weather-clear-night-symbolic";
+    if (this.#colorScheme === DarkModes.LIGHT)
+      return "weather-clear-symbolic"
     else return "weather-clear-night-symbolic";
   }
 
@@ -80,7 +92,7 @@ export class ColorScheme extends Object {
     setTimeout(() => {
       this.#daytime = !this.#daytime
       this.timeout()
-    }, interval);
+    }, interval / GLib.TIME_SPAN_MILLISECOND);
   }
 
   constructor() {
