@@ -1,7 +1,6 @@
 import { app } from "#/App";
 import { useSettings } from "#/lib/settings";
 import Adw from "gi://Adw?version=1";
-import Gio from "gi://Gio?version=2.0";
 import Gtk from "gi://Gtk?version=4.0";
 
 export default () => {
@@ -43,11 +42,7 @@ export default () => {
           settings.setWallpaperDay(
             fileDialog.open_finish(res).get_path() ?? ""))
       }}>
-      <Gtk.Picture
-        file={settings.wallpaperDay
-          .as(wp => Gio.File.new_for_path(wp))}
-        contentFit={Gtk.ContentFit.COVER}
-      />
+      <Gtk.Image file={settings.wallpaperDay} />
     </Adw.ActionRow>
     <Adw.ActionRow
       activatable
@@ -58,11 +53,7 @@ export default () => {
           settings.setWallpaperNight(
             fileDialog.open_finish(res).get_path() ?? ""))
       }}>
-      <Gtk.Picture
-        file={settings.wallpaperNight
-          .as(wp => Gio.File.new_for_path(wp))}
-        contentFit={Gtk.ContentFit.COVER}
-      />
+      <Gtk.Image file={settings.wallpaperNight} />
     </Adw.ActionRow>
   </Adw.PreferencesGroup>
 }
