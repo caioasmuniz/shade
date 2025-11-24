@@ -3,9 +3,12 @@ import Gio from "gi://Gio?version=2.0"
 import Gly from "gi://Gly"
 import GlyGtk4 from "gi://GlyGtk4"
 import Gtk from "gi://Gtk?version=4.0"
-import { createBinding, createComputed } from "gnim"
+import Gdk from "gi://Gdk?version=4.0"
+import { createBinding, createComputed, For, onCleanup } from "gnim"
 import { ColorScheme, DarkModes } from "#/lib/colorScheme"
 import { useSettings } from "#/lib/settings"
+import { app } from "#/App"
+import { monitors } from "#/lib/monitors"
 
 export const Wallpaper = () => {
   const settings = useSettings().general
@@ -24,22 +27,33 @@ export const Wallpaper = () => {
     }
   )
 
-  return <Astal.Window
-    layer={Astal.Layer.BACKGROUND}
-    anchor={
-      Astal.WindowAnchor.TOP |
-      Astal.WindowAnchor.RIGHT |
-      Astal.WindowAnchor.BOTTOM |
-      Astal.WindowAnchor.LEFT
-    }
-    exclusivity={Astal.Exclusivity.IGNORE}
-    visible
-  >
-    <Gtk.Picture
-      file={wp}
-      contentFit={Gtk.ContentFit.COVER}
-    />
-  </Astal.Window>
+  return <For each={monitors()}>
+    {(monitor: Gdk.Monitor) =>
+      <Astal.Window
+        $={self => {
+          app.wallpaper.push(self)
+          onCleanup(() => {
+            app.wallpaper = app.wallpaper.filter(w => w !== self)
+            self.destroy()
+          })
+        }}
+        gdkmonitor={monitor}
+        layer={Astal.Layer.BACKGROUND}
+        anchor={
+          Astal.WindowAnchor.TOP |
+          Astal.WindowAnchor.RIGHT |
+          Astal.WindowAnchor.BOTTOM |
+          Astal.WindowAnchor.LEFT
+        }
+        exclusivity={Astal.Exclusivity.IGNORE}
+        visible
+      >
+        <Gtk.Picture
+          file={wp}
+          contentFit={Gtk.ContentFit.COVER}
+        />
+      </Astal.Window>}
+  </For>
 }
 
 export const GlyWallpaper = () => {
