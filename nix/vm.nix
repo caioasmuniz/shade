@@ -18,6 +18,13 @@
       };
     };
   };
+  services.qemuGuest.enable = true;
+  services.spice-vdagentd.enable = true;
+
+  virtualisation.vmVariant.virtualisation = {
+    memorySize = 2048;
+    cores = 3;
+  };
 
   environment.systemPackages = [
     pkgs.firefox
@@ -26,13 +33,11 @@
   ];
 
   programs.shade.enable = true;
-  programs.shade.shell.systemd.enable = false;
   programs.shade.hyprland.settings = {
     bind = [
       "SUPERSHIFT,Return,exec,${lib.getExe pkgs.uwsm} app -- ghostty"
       "SUPERSHIFT,B,exec,${lib.getExe pkgs.uwsm} app -- firefox"
     ];
-    exec-once = [ "uwsm-app -t service -- shade-shell"];
   };
 
   system.stateVersion = "25.05";

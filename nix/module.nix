@@ -39,7 +39,7 @@ in
           pkg
           pkgs.adwaita-icon-theme
         ];
-        programs.hyprland.settings.exec = [ "uwsm-app -t service -- shade-shell" ];
+        programs.hyprland.settings.exec-once = [ "uwsm-app -t service -- shade-shell" ];
       })
       (lib.mkIf cfg.shell.blur.enable {
         programs.hyprland.extraConfig = ''
