@@ -13,10 +13,10 @@ import { screenlocked, setScreelocked } from ".."
 const createLocks = (onUnlock: () => void) => {
   const { LEFT, RIGHT, TOP, BOTTOM } = Astal.WindowAnchor
   const lock = SessionLock.Instance.new()
-  const [time, setTime] = createState("")
+  const [time, setTime] = createState(GLib.DateTime.new_now_local())
 
   setInterval(() => {
-    setTime(GLib.DateTime.new_now_local().format("%X")!)
+    setTime(GLib.DateTime.new_now_local())
   }, 1000);
 
   const unlock = (self: Gtk.PasswordEntry) => {
@@ -57,21 +57,33 @@ const createLocks = (onUnlock: () => void) => {
         exclusivity={Astal.Exclusivity.IGNORE}
         keymode={Astal.Keymode.EXCLUSIVE}
       >
-        <Gtk.Box
-          valign={Gtk.Align.CENTER}
+        <Gtk.CenterBox
           halign={Gtk.Align.CENTER}
-          spacing={16}
+          valign={Gtk.Align.CENTER}
           orientation={Gtk.Orientation.VERTICAL}
         >
-          <Gtk.Label
-            cssClasses={["title-1", "numeric", "card"]}
-            label={time}
-            css={"font-size: 5em;"}
-          />
           <Gtk.Box
+            $type="start"
+            orientation={Gtk.Orientation.VERTICAL}
+            marginBottom={12}
+          >
+            <Gtk.Label
+              cssClasses={["title-1", "numeric"]}
+              label={time.as(t => t.format("%R")!)}
+              css={"font-size: 4em;"}
+            />
+            <Gtk.Label
+              marginBottom={12}
+              cssClasses={["title-3", "numeric"]}
+              label={time.as(t => t.format("%A, %x")!)}
+            />
+          </Gtk.Box>
+          <Gtk.Box
+            $type="center"
             valign={Gtk.Align.CENTER}
             halign={Gtk.Align.CENTER}
             spacing={4}
+            css={"padding:8px;"}
             orientation={Gtk.Orientation.VERTICAL}
             cssClasses={["card"]}>
             <Adw.Avatar size={64} />
@@ -84,7 +96,7 @@ const createLocks = (onUnlock: () => void) => {
               showPeekIcon
               onActivate={unlock} />
           </Gtk.Box>
-        </Gtk.Box>
+        </Gtk.CenterBox>
       </Astal.Window>}
   </For>
 }
