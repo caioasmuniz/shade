@@ -5,3 +5,4 @@ dist/
 @girs/
 .direnv
 result
+*.qcow2

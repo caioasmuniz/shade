@@ -18,7 +18,7 @@ export default () => <Adw.SplitButton
         profile.set_active_profile("power-saver")
     })}
   popover={
-    <Gtk.Popover>
+    <Gtk.Popover cssClasses={[]}>
       <Gtk.Box
         cssClasses={["linked"]}
         orientation={Gtk.Orientation.VERTICAL}>

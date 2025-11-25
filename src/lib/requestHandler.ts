@@ -1,4 +1,5 @@
 import { app } from "#/App";
+import { launcherOpen, qsOpen, setLauncherOpen, setQsOpen } from "#/widget";
 import Gio from "gi://Gio?version=2.0";
 
 export const requestHandler =
@@ -11,10 +12,10 @@ export const requestHandler =
           app.bar.forEach(bar => bar.visible = !bar.visible)
           break
         case "applauncher":
-          app.applauncher.visible = !app.applauncher.visible
+          setLauncherOpen(!launcherOpen.get())
           break
         case "quicksettings":
-          app.quicksettings.visible = !app.quicksettings.visible
+          setQsOpen(!qsOpen.get())
           break
       }
     cmd.done()

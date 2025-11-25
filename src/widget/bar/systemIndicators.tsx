@@ -7,7 +7,7 @@ import PowerProf from "gi://AstalPowerProfiles"
 import Gdk from "gi://Gdk?version=4.0"
 import Gtk from "gi://Gtk?version=4.0"
 import { Accessor, createBinding, createComputed } from "gnim"
-import { app } from "#/App"
+import { qsOpen, setQsOpen } from ".."
 
 export default ({ vertical }: { vertical: Accessor<boolean> }) => {
   const audio = Wireplumber.get_default()!.audio
@@ -79,9 +79,8 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
 
   return <Gtk.ToggleButton
     cursor={Gdk.Cursor.new_from_name("pointer", null)}
-    active={createBinding(app.quicksettings, "visible")}
-    onClicked={() =>
-      app.quicksettings.visible = !app.quicksettings.visible}
+    active={qsOpen}
+    onClicked={() => setQsOpen(!qsOpen.get())}
     $={self => self.add_controller(
       <Gtk.EventControllerScroll
         flags={Gtk.EventControllerScrollFlags.VERTICAL}

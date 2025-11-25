@@ -4,7 +4,7 @@ import AstalIO from "gi://AstalIO?version=0.1";
 import Tray from "gi://AstalTray";
 import Gtk from "gi://Gtk?version=4.0";
 import { Accessor, createBinding, For } from "gnim";
-
+import { setQsOpen } from "..";
 
 export const TrayBox = () => {
   const tray = Tray.get_default();
@@ -50,7 +50,7 @@ export const TrayBox = () => {
     cssClasses={["circular"]}
     onClicked={() => {
       app.settings.visible = true;
-      app.quicksettings.visible = false;
+      setQsOpen(false);
     }}>
     <Gtk.Image iconName={"preferences-system-symbolic"} />
   </Gtk.Button>

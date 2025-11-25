@@ -17,7 +17,8 @@ function lengthStr(length: number) {
 
 const PlayerApp = ({ player }: { player: Mpris.Player }) =>
   <Gtk.Box
-    halign={Gtk.Align.START}
+    hexpand
+    halign={Gtk.Align.CENTER}
     spacing={4}>
     <Gtk.Image
       cssClasses={["icon"]}

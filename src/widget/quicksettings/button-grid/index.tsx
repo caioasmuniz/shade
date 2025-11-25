@@ -1,6 +1,6 @@
 import Gtk from "gi://Gtk?version=4.0"
 import Powerprofiles from "./powerprofiles"
-import DarkMode from "./darkMode"
+import ColorScheme from "./colorScheme"
 import Bluetooth from "./bluetooth"
 import Caffeinated from "./caffeinated"
 
@@ -8,7 +8,7 @@ export const ButtonGrid = ({ cols = 2 }:
   { cols?: number }) => {
   const items = [
     <Powerprofiles />,
-    <DarkMode />,
+    <ColorScheme />,
     <Bluetooth />,
     <Caffeinated />
   ];

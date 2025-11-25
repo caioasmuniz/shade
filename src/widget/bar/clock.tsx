@@ -23,6 +23,7 @@ export default ({ vertical }: { vertical: Accessor<boolean> }) => {
     popover={<Gtk.Popover
       valign={Gtk.Align.CENTER}
       halign={Gtk.Align.CENTER}
+      cssClasses={[]}
       hasArrow={false}>
       <Gtk.Calendar />
     </Gtk.Popover> as Gtk.Popover}>
