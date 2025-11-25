@@ -49,37 +49,11 @@ export const Wallpaper = () => {
         visible
       >
         <Gtk.Picture
-          file={wp}
           contentFit={Gtk.ContentFit.COVER}
+          paintable={wp.as(wp => GlyGtk4.frame_get_texture(
+            Gly.Loader.new(wp).load().next_frame()
+          ))}
         />
       </Astal.Window>}
   </For>
-}
-
-export const GlyWallpaper = () => {
-  const file = Gio.File.new_for_path("./assets/catalina.heic")
-  const image = Gly.Loader.new(file).load()
-  // const [paintable, setPaintable] = createState(
-  //   GlyGtk4.frame_get_texture(image.next_frame()))
-
-  //   setInterval(() => {
-  //   setPaintable(GlyGtk4.frame_get_texture(image.next_frame()))
-  // }, 3000);
-
-  return <Astal.Window
-    layer={Astal.Layer.BACKGROUND}
-    anchor={
-      Astal.WindowAnchor.TOP |
-      Astal.WindowAnchor.RIGHT |
-      Astal.WindowAnchor.BOTTOM |
-      Astal.WindowAnchor.LEFT
-    }
-    exclusivity={Astal.Exclusivity.IGNORE}
-    visible
-  >
-    <Gtk.Picture
-      paintable={GlyGtk4.frame_get_texture(image.next_frame())}
-      contentFit={Gtk.ContentFit.COVER}
-    />
-  </Astal.Window>
 }
