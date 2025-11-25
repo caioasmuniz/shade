@@ -1,14 +1,13 @@
 import Gdk from "gi://Gdk?version=4.0";
 import Gtk from "gi://Gtk?version=4.0";
-import { createBinding } from "gnim";
-import { app } from "#/App";
+import { launcherOpen, setLauncherOpen } from "..";
 
 export default () => {
   return <Gtk.ToggleButton
     cursor={Gdk.Cursor.new_from_name("pointer", null)}
-    active={createBinding(app.applauncher, "visible")}
+    active={launcherOpen}
     onClicked={() =>
-      app.applauncher.visible = !app.applauncher.visible
+      setLauncherOpen(!launcherOpen.get())
     }>
     <Gtk.Image
       iconName={"nix-snowflake"}

@@ -6,6 +6,7 @@ import { createBinding, createState, For } from "gnim";
 import AppButton from "./appButton";
 import { useSettings } from "../../lib/settings";
 import { app } from "#/App";
+import { launcherOpen, qsOpen, setLauncherOpen, setQsOpen } from "..";
 
 const { TOP, BOTTOM, LEFT, RIGHT } = Astal.WindowAnchor
 
@@ -22,6 +23,14 @@ export default () => {
     name={"applauncher"}
     margin={12}
     application={app}
+    visible={launcherOpen}
+    onNotifyVisible={self => {
+      if ((barCfg.position.get() === LEFT ||
+        barCfg.position.get() === RIGHT)
+        && self.visible && qsOpen.get())
+        setQsOpen(false)
+      setLauncherOpen(self.visible)
+    }}
     cssClasses={["card", "frame", "background"]}
     css={"padding-right:0px;"}
     keymode={Astal.Keymode.ON_DEMAND}

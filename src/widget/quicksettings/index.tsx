@@ -9,6 +9,7 @@ import { TrayBox } from "./tray";
 import { AudioConfig, BrightnessSlider, MicConfig } from "./sliders";
 import { ButtonGrid } from "./button-grid";
 import { Expander } from "./expander";
+import { launcherOpen, qsOpen, setLauncherOpen, setQsOpen } from "..";
 
 export default () => {
 
@@ -21,6 +22,14 @@ export default () => {
     margin={12}
     application={app}
     name={"quicksettings"}
+    visible={qsOpen}
+    onNotifyVisible={self => {
+      if ((barCfg.position.get() === LEFT ||
+        barCfg.position.get() === RIGHT)
+        && self.visible && launcherOpen.get())
+        setLauncherOpen(false)
+      setQsOpen(self.visible)
+    }}
     cssClasses={["card", "frame", "background"]}
     css={"padding-right:0px;"}
     anchor={barCfg.position.as(p =>
