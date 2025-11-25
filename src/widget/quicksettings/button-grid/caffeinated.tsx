@@ -9,19 +9,21 @@ export default () => {
     cssClasses={createBinding(inhibit, "idle")
       .as(idle => idle ? ["suggested-action", "warning"] : [])}
     popover={
-      <Gtk.Popover>
+      <Gtk.Popover cssClasses={[]}>
         <Gtk.Box
-          orientation={Gtk.Orientation.VERTICAL}
-          cssClasses={["linked"]}>
-          <Gtk.Button onClicked={() => { }}>
+          cssClasses={["linked"]}
+          orientation={Gtk.Orientation.VERTICAL}>
+          <Gtk.Button onClicked={() =>
+            inhibit.idle = true}>
             <Adw.ButtonContent
-              iconName={""}
-              label="" />
+              iconName={"radio-checked-symbolic"}
+              label={"Caffeinated on"} />
           </Gtk.Button>
-          <Gtk.Button onClicked={() => { }}>
+          <Gtk.Button onClicked={() =>
+            inhibit.idle = false}>
             <Adw.ButtonContent
-              iconName={""}
-              label="" />
+              iconName={"radio-symbolic"}
+              label={"Caffeinated off"} />
           </Gtk.Button>
         </Gtk.Box>
       </Gtk.Popover> as Gtk.Popover}
@@ -31,7 +33,10 @@ export default () => {
         inhibit.idle = !inhibit.idle
       })}>
     <Adw.ButtonContent
-      // iconName={"cafe-symbolic"}
+      iconName={createBinding(inhibit, "idle")
+        .as(idle => idle ?
+          "radio-checked-symbolic" :
+          "radio-symbolic")}
       label={createBinding(inhibit, "idle")
         .as(idle => idle ?
           "Caffeinated on" :
