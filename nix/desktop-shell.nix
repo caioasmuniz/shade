@@ -38,8 +38,8 @@ pkgs.stdenv.mkDerivation {
 
   preFixup = ''
     gappsWrapperArgs+=(
-      --prefix PATH :
-       ${pkgs.lib.makeBinPath wrapperPackages}
+      --prefix XDG_DATA_DIRS : "${pkgs.glycin-loaders}/share"
+      --prefix PATH : ${pkgs.lib.makeBinPath wrapperPackages}
       --prefix LD_PRELOAD : 
       "${pkgs.gtk4-layer-shell}/lib/libgtk4-layer-shell.so"
       )'';
