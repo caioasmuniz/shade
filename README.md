@@ -1,11 +1,5 @@
-# Stash - Skill's terrific astal shell
+# Shade - Skill's Hyprland Adwaita Desktop Environment
 
-My personal desktop shell, built with AGS, Astal, GTK 4, and Libadwaita.
+My personal Desktop Environment, using Hyprland, Gnim, Astal, GTK 4, and Libadwaita.
 
-## Light Mode
-
-![alt](/assets/desktop-light.png)
-
-## Dark Mode
-
-![alt](/assets/desktop-dark.png)
+## Pics comming soon

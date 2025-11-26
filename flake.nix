@@ -1,115 +1,99 @@
 {
-  description = "Stash - Skill's terrific astal shell";
+  description = "Shade - Skill's Hyprland Adwaita Desktop Environment";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     astal.url = "github:aylur/astal";
-    ags = {
-      url = "github:aylur/ags";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.astal.follows = "astal";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs =
     {
       self,
       nixpkgs,
-      ags,
+      astal,
       ...
     }@inputs:
     let
-      name = "stash";
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
-      astalPackages = with ags.packages.${system}; [
+      astalPackages = with astal.packages.${system}; [
         apps
         battery
         bluetooth
-        hyprland
+        astal.packages.${system}.hyprland
         mpris
         network
         notifd
         powerprofiles
         tray
         wireplumber
+        astal4
       ];
 
-      extraPackages =
+      nativeBuildInputs = with pkgs; [
+        wrapGAppsHook4
+        gobject-introspection
+        meson
+        pkg-config
+        ninja
+        desktop-file-utils
+        libxml2
+      ];
+
+      buildInputs =
         with pkgs;
         [
+          gsettings-desktop-schemas
+          glib
           libadwaita
           libgtop
+          libgweather
+          libglycin
+          glycin-loaders
+          glib-networking
+          gtk4
+          gtk4-layer-shell
+          gjs
+          esbuild
+          nodejs
         ]
         ++ astalPackages;
 
       wrapperPackages = with pkgs; [
         brightnessctl
-        darkman
+        bash
       ];
     in
     {
-      packages.${system}.default = pkgs.stdenv.mkDerivation {
-        inherit name;
-        meta.mainProgram = "${name}";
-        src = ./.;
-
-        nativeBuildInputs = [
-          pkgs.wrapGAppsHook
-          pkgs.gobject-introspection
-          ags.packages.${system}.default
-        ];
-
-        buildInputs = extraPackages ++ [
-          pkgs.gjs
-          pkgs.glib
-          ags.packages.${system}.astal4
-        ];
-
-        installPhase = ''
-          mkdir -p $out/bin
-          ags bundle app.tsx $out/bin/${name}
-          runHook postInstall
-        '';
-
-        postBuild = ''
-          install -Dm644 data/${name}.gschema.xml -t $out/share/gsettings-schemas/$name/glib-2.0/schemas
-          glib-compile-schemas $out/share/gsettings-schemas/$name/glib-2.0/schemas
-        '';
-
-        preFixup = ''
-          gappsWrapperArgs+=(
-            --prefix PATH : ${pkgs.lib.makeBinPath wrapperPackages}
-          )
-        '';
+      packages.${system} = {
+        default = import ./nix/desktop-shell.nix {
+          inherit
+            pkgs
+            buildInputs
+            nativeBuildInputs
+            wrapperPackages
+            ;
+        };
       };
 
-      homeManagerModules = {
-        default = self.homeManagerModules.stash;
-        stash = import ./hm-module.nix self;
-      };
+      nixosModules.default = import ./nix/module.nix inputs;
 
-      devShells.${system}.default = pkgs.mkShell {
-        GSETTINGS_SCHEMA_DIR = "./data";
-        ENV = "dev";
-        shellHook = ''
-          mkdir data
-          glib-compile-schemas data
-        '';
-        buildInputs =
-          with pkgs;
-          [
-            (inputs.ags.packages.${pkgs.system}.default.override {
-              inherit extraPackages;
-            })
-            libnotify
-            nixd
-            nixfmt-rfc-style
-            nix-output-monitor
-          ]
-          ++ astalPackages
-          ++ wrapperPackages;
+      devShells.${system} = import ./nix/devshell.nix {
+        inherit
+          pkgs
+          buildInputs
+          nativeBuildInputs
+          wrapperPackages
+          ;
+      };
+      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./nix/vm.nix
+          self.nixosModules.default
+        ];
       };
     };
 }
