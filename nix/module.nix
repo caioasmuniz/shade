@@ -39,6 +39,7 @@ in
           pkg
           pkgs.adwaita-icon-theme
         ];
+        security.pam.services.astal-auth = {};
         programs.hyprland.settings.exec-once = [ "uwsm-app -t service -- shade-shell" ];
       })
       (lib.mkIf cfg.shell.blur.enable {

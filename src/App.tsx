@@ -19,6 +19,7 @@ export class ShadeShell extends Adw.Application {
   declare notifications: Astal.Window
   declare bar: Astal.Window[]
   declare wallpaper: Astal.Window[]
+  declare lockscreen: Astal.Window[]
   declare quicksettings: Astal.Window
   declare settings: Adw.Window
 
@@ -32,6 +33,7 @@ export class ShadeShell extends Adw.Application {
     GLib.set_application_name(gettext("Shade Shell"))
     this.bar = []
     this.wallpaper = []
+    this.lockscreen = []
   }
 
   private initCss() {

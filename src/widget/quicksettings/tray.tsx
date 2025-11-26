@@ -5,6 +5,8 @@ import Tray from "gi://AstalTray";
 import Gtk from "gi://Gtk?version=4.0";
 import { Accessor, createBinding, For } from "gnim";
 import { setQsOpen } from "..";
+import { setScreelocked } from "..";
+
 
 export const TrayBox = () => {
   const tray = Tray.get_default();
@@ -13,7 +15,7 @@ export const TrayBox = () => {
     <Gtk.Button
       cssClasses={["circular"]}
       onClicked={() => {
-        AstalIO.Process.exec_asyncv(["bash", "-c", "hyprlock --immediate"]);
+        setScreelocked(true)
       }}
     >
       <Gtk.Image iconName={"system-lock-screen-symbolic"} />

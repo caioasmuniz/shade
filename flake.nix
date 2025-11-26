@@ -20,6 +20,7 @@
 
       astalPackages = with astal.packages.${system}; [
         apps
+        auth
         battery
         bluetooth
         astal.packages.${system}.hyprland
