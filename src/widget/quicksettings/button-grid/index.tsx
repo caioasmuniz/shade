@@ -2,6 +2,7 @@ import Gtk from "gi://Gtk?version=4.0"
 import Powerprofiles from "./powerprofiles"
 import ColorScheme from "./colorScheme"
 import Bluetooth from "./bluetooth"
+import Caffeinated from "./caffeinated"
 
 export const ButtonGrid = ({ cols = 2 }:
   { cols?: number }) => {
@@ -9,6 +10,7 @@ export const ButtonGrid = ({ cols = 2 }:
     <Powerprofiles />,
     <ColorScheme />,
     <Bluetooth />,
+    <Caffeinated />
   ];
 
   return <Gtk.Grid rowSpacing={4} columnSpacing={4}
