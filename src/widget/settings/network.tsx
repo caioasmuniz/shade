@@ -1,6 +1,7 @@
 import Adw from "gi://Adw?version=1";
 import AstalNetwork from "gi://AstalNetwork?version=0.1";
-import { Accessor, createBinding, createComputed, For } from "gnim";
+import Gtk from "gi://Gtk?version=4.0";
+import { createBinding, createComputed, For } from "gnim";
 
 export default () => {
   const network = AstalNetwork.get_default()
@@ -28,7 +29,7 @@ export default () => {
     </Adw.PreferencesGroup>
     <Adw.PreferencesGroup
       title={"Available Networks"}>
-      <button
+      <Gtk.Button
         $type={"header-suffix"}
         iconName={"view-refresh-symbolic"}
         onClicked={() => network.wifi.scan()} />

@@ -1,7 +1,7 @@
 import { createBinding, createComputed } from "gnim"
 import Adw from "gi://Adw?version=1"
 import AstalNetwork from "gi://AstalNetwork?version=0.1"
-import NetworkPage from "../settings/network"
+import NetworkPage from "../../settings/network"
 import Gtk from "gi://Gtk?version=4.0"
 
 const network = AstalNetwork.get_default()
@@ -16,8 +16,11 @@ const primary = createComputed([
 export default () => <Adw.SplitButton
   widthRequest={150}
   popover={
-    <Gtk.Popover hexpand
-      widthRequest={300}>
+    <Gtk.Popover
+      hexpand
+      widthRequest={300}
+      cssClasses={[]}
+    >
       <NetworkPage />
     </ Gtk.Popover> as Gtk.Popover}>
   <Adw.ButtonContent
