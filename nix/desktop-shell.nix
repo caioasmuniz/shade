@@ -27,7 +27,7 @@ pkgs.stdenv.mkDerivation {
     pnpmDeps = pkgs.pnpm.fetchDeps {
       inherit pname version src;
       fetcherVersion = 2;
-      hash = "sha256-Hegniu2B99wvCRy4qDkETe6l3+y6AmNj00GtLquGdxc=";
+      hash = "sha256-4qNhaUHlnGUtDj1qwZ3TUN4//Jff/2Gt5NMXF4CUbyQ=";
     };
 
     installPhase = ''

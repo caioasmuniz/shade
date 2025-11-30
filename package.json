@@ -15,7 +15,7 @@
     "typescript-eslint": "latest"
   },
   "dependencies": {
-    "gnim": "^1.8.2",
+    "gnim": "^1.9.0",
     "gnim-schemas": "^0.2.0"
   },
   "prettier": {
