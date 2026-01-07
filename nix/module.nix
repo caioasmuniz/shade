@@ -44,8 +44,8 @@ in
       })
       (lib.mkIf cfg.shell.blur.enable {
         programs.hyprland.extraConfig = ''
-          layerrule=blur,gtk4-layer-shell
-          layerrule=ignorezero,gtk4-layer-shell
+          layerrule=  blur on, match:namespace gtk4-layer-shell
+          layerrule= ignore_alpha 0, match:namespace gtk4-layer-shell
         '';
       })
     ]

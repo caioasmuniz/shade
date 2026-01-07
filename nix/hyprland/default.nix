@@ -72,9 +72,9 @@ in
           package = pkgs.hyprland;
           portalPackage = pkgs.xdg-desktop-portal-hyprland;
 
-          plugins = [
-            pkgs.hyprlandPlugins.hypr-dynamic-cursors
-          ];
+          # plugins = [
+          #   pkgs.hyprlandPlugins.hypr-dynamic-cursors
+          # ];
 
           settings = {
             monitor = [
@@ -198,7 +198,7 @@ in
             };
 
             layerrule = [
-              "noanim,selection"
+              "no_anim on, match:namespace selection"
             ];
 
             exec = [
