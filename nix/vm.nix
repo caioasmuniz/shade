@@ -26,10 +26,11 @@
     cores = 3;
   };
 
-  environment.systemPackages = [
-    pkgs.firefox
-    pkgs.moonlight-qt
-    pkgs.ghostty
+  environment.systemPackages = with pkgs;[
+    firefox
+    moonlight-qt
+    ghostty
+    btop
   ];
 
   programs.shade.enable = true;

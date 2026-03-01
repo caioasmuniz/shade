@@ -51,7 +51,7 @@
           libadwaita
           libgtop
           libgweather
-          libglycin
+          libglycin-gtk4
           glycin-loaders
           glib-networking
           gtk4
