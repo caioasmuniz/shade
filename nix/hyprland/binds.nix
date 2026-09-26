@@ -29,7 +29,6 @@ in
       ",Insert,togglespecialworkspace,scratchpad"
       "SUPER,Insert,movetoworkspace,special:scratchpad"
       "SUPER,Pause,movetoworkspace,special:scratchpad"
-      "SUPER,S,togglesplit"
 
       ",XF86AudioMedia,exec,${pkgs.playerctl}/bin/playerctl play-pause"
       ",XF86AudioPlay,exec,${pkgs.playerctl}/bin/playerctl play-pause"
